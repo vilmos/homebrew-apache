@@ -7,13 +7,27 @@ class ModSuexec < Formula
 
   def install
     if MacOS.mountain_lion?
-      # Fixes a bad path returned by `apr-1-config --cpp` on ML.
-      # https://github.com/mxcl/homebrew/issues/13586
-      ENV['CPP'] = "#{ENV.cc} -E"
-      # Use Homebrew libtool, not the one from apr that also has a bad path.
-      ENV['APR_LIBTOOL'] = 'glibtool'
-      # Especially for Xcode-only, the apr hearders are needed by glibtool
-      ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include/apr-1"
+      # Force this formula to use OS X's built-in apr-1-config
+      ENV['HOMEBREW_CCCFG'] = ENV['HOMEBREW_CCCFG'].delete "a"
+      # 10.8's apr-util expects the compiler at a non-existent location. If needed, create symlink(s) to actual tools
+      if File.directory?('/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain')
+        unless File.exists?('/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/bin/cc')
+          abort "ERROR: /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/ exists but /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/bin/cc is not found. It is suggested you delete /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/ as a directory and create it as a symlink to /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain. Exiting..."
+        end
+      else
+        unless File.symlink?('/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain')
+          if File.directory?('/Applications/Xcode.app/')
+            system "ln -s /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain 2>/dev/null || sudo ln -s /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain"
+          else
+            FileUtils.mkdir_p '/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr'
+            File.symlink(File.expand_path('/usr/bin'), '/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/bin')
+            File.symlink(File.expand_path('/usr/include'), '/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/include')
+            File.symlink(File.expand_path('/usr/lib'), '/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/lib')
+            File.symlink(File.expand_path('/usr/libexec'), '/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/libexec')
+            File.symlink(File.expand_path('/usr/share'), '/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/share')
+          end
+        end
+      end
     end
     suexec_userdir   = ENV['SUEXEC_USERDIR']  || 'Sites'
     suexec_docroot   = ENV['SUEXEC_DOCROOT']  || '/Library/WebServer'
@@ -45,13 +59,9 @@ class ModSuexec < Formula
   def caveats
     suexecbin = `/usr/sbin/apachectl -V`.match(/SUEXEC_BIN="(.+)"/)[1]
     <<-EOS.undent
-      This is currently having problems being built on a fresh 10.8 system. Please
-      only build on 10.7 Lion for now.
-
       To complete the installation, execute the following commands:
         sudo cp #{libexec}/suexec #{File.dirname(suexecbin)}
-        sudo chown root #{suexecbin}
-        sudo chgrp _www #{suexecbin}
+        sudo chown root:_www #{suexecbin}
         sudo chmod 4750 #{suexecbin}
 
       Then, you need to edit /etc/apache2/httpd.conf to add the following line:

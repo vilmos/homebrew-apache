@@ -6,6 +6,9 @@ class ModSuexec < Formula
   md5 '4504934464c5ee51018dbafa6d99810d'
 
   def install
+    if MacOS.mountain_lion?
+      abort "Does not build correctly on 10.8 Mountain Lion. Exiting..."
+    end
     suexec_userdir   = ENV['SUEXEC_USERDIR']  || 'Sites'
     suexec_docroot   = ENV['SUEXEC_DOCROOT']  || '/Library/WebServer'
     suexec_uidmin    = ENV['SUEXEC_UIDMIN']   || '500'
@@ -36,6 +39,9 @@ class ModSuexec < Formula
   def caveats
     suexecbin = `/usr/sbin/apachectl -V`.match(/SUEXEC_BIN="(.+)"/)[1]
     <<-EOS.undent
+      This is currently having problems being built on a fresh 10.8 system. Please
+      only build on 10.7 Lion for now.
+
       To complete the installation, execute the following commands:
         sudo cp #{libexec}/suexec #{File.dirname(suexecbin)}
         sudo chown root #{suexecbin}

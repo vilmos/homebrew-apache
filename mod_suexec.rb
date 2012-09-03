@@ -7,7 +7,13 @@ class ModSuexec < Formula
 
   def install
     if MacOS.mountain_lion?
-      abort "Does not build correctly on 10.8 Mountain Lion. Exiting..."
+      # Fixes a bad path returned by `apr-1-config --cpp` on ML.
+      # https://github.com/mxcl/homebrew/issues/13586
+      ENV['CPP'] = "#{ENV.cc} -E"
+      # Use Homebrew libtool, not the one from apr that also has a bad path.
+      ENV['APR_LIBTOOL'] = 'glibtool'
+      # Especially for Xcode-only, the apr hearders are needed by glibtool
+      ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include/apr-1"
     end
     suexec_userdir   = ENV['SUEXEC_USERDIR']  || 'Sites'
     suexec_docroot   = ENV['SUEXEC_DOCROOT']  || '/Library/WebServer'

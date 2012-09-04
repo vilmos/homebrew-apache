@@ -12,24 +12,22 @@ class ModSuexec < Formula
       # Force the toolchain reported by apr-1-config
       ENV['CC'] = "/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/bin/cc"
       ENV['CPP'] = ENV['CC'] + " -E"
-      # 10.8's apr-util expects the compiler at a non-existent location. If needed, create symlink(s) to actual tools
-      if File.directory?('/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain')
-        unless File.exists?('/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/bin/cc')
-          abort "ERROR: /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/ exists but /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/bin/cc is not found. It is suggested you delete /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/ as a directory and create it as a symlink to /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain. Exiting..."
-        end
-      else
-        unless File.symlink?('/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain')
-          if File.directory?('/Applications/Xcode.app/')
-            system "ln -s /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain 2>/dev/null || sudo ln -s /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain"
-          else
-            FileUtils.mkdir_p '/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr'
-            File.symlink(File.expand_path('/usr/bin'), '/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/bin')
-            File.symlink(File.expand_path('/usr/include'), '/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/include')
-            File.symlink(File.expand_path('/usr/lib'), '/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/lib')
-            File.symlink(File.expand_path('/usr/libexec'), '/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/libexec')
-            File.symlink(File.expand_path('/usr/share'), '/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/share')
-          end
-        end
+      # This formula must be built with the compiler at the same path as `apr-1-config --cc`
+      # (Other workarounds, like HOMEBREW_CCCFG containing 'a', do not seem to work here)
+      unless File.exists?('/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/bin/cc')
+        abort "ERROR: An OS X bug exists that requires the compiler to be at /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/bin/cc
+               If you have Xcode installed, create a symbolic link to the correct location:
+               ln -s /Applications/Xcode.app/Contents/Developer/Toolchains/{XcodeDefault,OSX10.8.xctoolchain}.xctoolchain
+               (sudo might be needed if you downloaded Xcode from the App Store)
+
+               If you do not have Xcode installed, create a fake OSX10.8.xctoolchain directory pointing to system 
+               folder that contain the compilers and libraries needed:
+               mkdir -p /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr
+               ln -s /usr/bin /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/bin
+               ln -s /usr/include /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/include
+               ln -s /usr/lib /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/lib
+               ln -s /usr/libexec /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/libexec
+               ln -s /usr/share /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/share"
       end
     end
     suexec_userdir   = ENV['SUEXEC_USERDIR']  || 'Sites'

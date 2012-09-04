@@ -9,6 +9,9 @@ class ModSuexec < Formula
     if MacOS.mountain_lion?
       # Force this formula to use OS X's built-in apr-1-config
       ENV['HOMEBREW_CCCFG'] = ENV['HOMEBREW_CCCFG'].delete "a"
+      # Force the toolchain reported by apr-1-config
+      ENV['CC'] = "/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/bin/cc"
+      ENV['CPP'] = ENV['CC'] + " -E"
       # 10.8's apr-util expects the compiler at a non-existent location. If needed, create symlink(s) to actual tools
       if File.directory?('/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain')
         unless File.exists?('/Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/bin/cc')

@@ -36,7 +36,7 @@ EOS
       end
     end
     suexec_userdir   = ENV['SUEXEC_USERDIR']  || 'Sites'
-    suexec_docroot   = ENV['SUEXEC_DOCROOT']  || '/Library/WebServer'
+    suexec_docroot   = ENV['SUEXEC_DOCROOT']  || '/'
     suexec_uidmin    = ENV['SUEXEC_UIDMIN']   || '500'
     suexec_gidmin    = ENV['SUEXEC_GIDMIN']   || '20'
     suexec_safepath  = ENV['SUEXEC_SAFEPATH'] || '/usr/local/bin:/usr/bin:/bin:/opt/local/bin'

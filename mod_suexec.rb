@@ -1,9 +1,9 @@
 require 'formula'
 
 class ModSuexec < Formula
-  url 'http://archive.apache.org/dist/httpd/httpd-2.2.20.tar.gz'
+  url 'http://archive.apache.org/dist/httpd/httpd-2.2.22.tar.bz2'
   homepage 'http://httpd.apache.org/docs/current/suexec.html'
-  md5 '4504934464c5ee51018dbafa6d99810d'
+  sha1 '766cd0843050a8dfb781e48b976f3ba6ebcf8696'
 
   def install
     if MacOS.mountain_lion?

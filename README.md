@@ -18,3 +18,5 @@ Docs
 `brew help`, `man brew`, or the Homebrew [wiki][].
 
 [wiki]:http://wiki.github.com/mxcl/homebrew
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/6c80ad364071a0cd7d2ebae1f2f28b09 "githalytics.com")](http://githalytics.com/homebrew/homebrew-apache)

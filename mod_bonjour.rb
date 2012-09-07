@@ -19,6 +19,9 @@ class ModBonjour < Formula
     To enable mod_bonjour in Apache, add the following to httpd.conf and restart Apache:
         LoadModule bonjour_module #{libexec}/mod_bonjour.so
 
+    If you are running OS X Lion 10.7 or earlier, you will need to comment out the line
+    in httpd.conf for the built-in mod_bonjour.so module and use only this one.
+
     Add the following to your virtual host conf files to advertise them on bonjour. The
     last number is whatever port the virtual host is listening on.
 

@@ -28,10 +28,6 @@ If you do not have Xcode installed, create a fake OSX10.8.xctoolchain directory 
 folder that contain the compilers and libraries needed:
 mkdir -p /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr
 ln -s /usr/bin /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/bin
-ln -s /usr/include /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/include
-ln -s /usr/lib /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/lib
-ln -s /usr/libexec /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/libexec
-ln -s /usr/share /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/share
 EOS
       end
     end
@@ -65,6 +61,9 @@ EOS
   def caveats
     suexecbin = `/usr/sbin/apachectl -V`.match(/SUEXEC_BIN="(.+)"/)[1]
     <<-EOS.undent
+      NOTE: If you're having installation problems relating to a missing `cc` compiler and
+      `OSX10.8.xctoolchain`, read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
+
       To complete the installation, execute the following commands:
         sudo cp #{libexec}/suexec #{File.dirname(suexecbin)}
         sudo chown root:_www #{suexecbin}

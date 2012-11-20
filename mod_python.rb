@@ -28,6 +28,9 @@ class ModPython < Formula
   end
 
   def caveats; <<-EOS.undent
+    NOTE: If you're having installation problems relating to a missing `cc` compiler and
+    `OSX10.8.xctoolchain`, read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
+
     To use mod_python, you must manually edit /etc/apache2/httpd.conf to load:
       #{libexec}/mod_python.so
 

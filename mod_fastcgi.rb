@@ -3,7 +3,7 @@ require 'formula'
 class ModFastcgi < Formula
   url 'http://www.fastcgi.com/dist/mod_fastcgi-2.4.6.tar.gz'
   homepage 'http://www.fastcgi.com/'
-  md5 'a21a613dd5dacf4c8ad88c8550294fed'
+  sha1 '69c56548bf97040a61903b32679fe3e3b7d3c2d4'
 
   def install
     target_arch = MacOS.prefer_64_bit? ? "x86_64" : "i386"

@@ -2,8 +2,8 @@ require 'formula'
 
 class ModWsgi < Formula
   homepage 'http://code.google.com/p/modwsgi/'
-  url 'http://modwsgi.googlecode.com/files/mod_wsgi-3.3.tar.gz'
-  sha1 'f32d38e5d3ed5de1efd5abefb52678f833dc9166'
+  url 'http://modwsgi.googlecode.com/files/mod_wsgi-3.4.tar.gz'
+  sha1 '92ebc48e60ab658a984f97fd40cb71e0ae895469'
 
   head 'http://modwsgi.googlecode.com/svn/trunk/mod_wsgi'
 

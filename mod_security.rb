@@ -8,7 +8,7 @@ class ModSecurity < Formula
   depends_on 'pcre'
 
   def apr_bin
-    superbin or "/usr/bin"
+    Superenv.bin or "/usr/bin"
   end
 
   def install

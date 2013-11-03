@@ -14,7 +14,8 @@ class ModFcgid < Formula
 
   def caveats; <<-EOS.undent
     NOTE: If you're having installation problems relating to a missing `cc` compiler and
-    `OSX10.8.xctoolchain`, read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
+    `OSX10.8.xctoolchain` or `OSX10.9.xctoolchain`, read the "Troubleshooting" section
+    of https://github.com/Homebrew/homebrew-apache
 
     You must manually edit /etc/apache2/httpd.conf to contain:
       LoadModule fcgid_module #{libexec}/mod_fcgid.so

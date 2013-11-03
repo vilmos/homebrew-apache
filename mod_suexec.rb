@@ -62,7 +62,8 @@ EOS
     suexecbin = `/usr/sbin/apachectl -V`.match(/SUEXEC_BIN="(.+)"/)[1]
     <<-EOS.undent
       NOTE: If you're having installation problems relating to a missing `cc` compiler and
-      `OSX10.8.xctoolchain`, read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
+      `OSX10.8.xctoolchain` or `OSX10.9.xctoolchain`, read the "Troubleshooting" section
+      of https://github.com/Homebrew/homebrew-apache
 
       To complete the installation, execute the following commands:
         sudo cp #{libexec}/suexec #{File.dirname(suexecbin)}

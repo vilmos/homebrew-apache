@@ -3,7 +3,7 @@ require 'formula'
 class ModFcgid < Formula
   homepage 'http://httpd.apache.org/mod_fcgid/'
   url 'http://apache.mesi.com.ar/httpd/mod_fcgid/mod_fcgid-2.3.7.tar.gz'
-  sha1 '0914ace219c13d125e831651078610f111d970e8'
+  sha1 '99d6b24f3f83a3a83d1d93d12a0d5992e3fa7851'
   head 'http://svn.apache.org/repos/asf/httpd/mod_fcgid/trunk'
 
   def install

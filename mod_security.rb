@@ -2,8 +2,8 @@ require 'formula'
 
 class ModSecurity < Formula
   homepage 'http://www.modsecurity.org/'
-  url 'https://www.modsecurity.org/tarball/2.7.5/modsecurity-apache_2.7.5.tar.gz'
-  sha1 '3901c792e8c1324578c959fa4ed9c52befe18570'
+  url 'https://www.modsecurity.org/tarball/2.7.7/modsecurity-apache_2.7.7.tar.gz'
+  sha1 '344c8c102d9800d48bd42eb683cd2ddd7c515be1'
 
   depends_on 'pcre'
 

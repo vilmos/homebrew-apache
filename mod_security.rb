@@ -39,7 +39,10 @@ class ModSecurity < Formula
 
   def caveats; <<-EOS.undent
     To use mod_security, you must manually edit /etc/apache2/httpd.conf to load:
-      #{libexec}/mod_security.so
+      #{libexec}/mod_security2.so
+
+    E.g.
+    LoadModule security2_module /usr/local/Cellar/mod_security/2.7.7/libexec/mod_security2.so
 
     Sample configuration file for Apache is at:
       #{prefix}/modsecurity.conf-recommended

@@ -5,9 +5,6 @@ class ModPython < Formula
   url 'http://dist.modpython.org/dist/mod_python-3.5.0.tgz'
   sha1 '9208bb813172ab51d601d78e439ea552f676d2d1'
 
-  # patch-src-connobject.c.diff from MacPorts
-  def patches; DATA; end
-
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

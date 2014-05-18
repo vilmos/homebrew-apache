@@ -1,9 +1,9 @@
 require "formula"
 
-class Httpd < Formula
+class Httpd24 < Formula
   homepage "https://httpd.apache.org/"
-  url "https://www.apache.org/dist/httpd/httpd-2.2.27.tar.bz2"
-  sha1 "fd4bf18dd1b3e0d9be9e85ff7e033b2eb8aa4976"
+  url "https://www.apache.org/dist/httpd/httpd-2.4.9.tar.bz2"
+  sha1 "646aedbf59519e914c424b3a85d846bf189be3f4"
 
   skip_clean :la
 

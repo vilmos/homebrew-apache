@@ -7,7 +7,8 @@ class Httpd24 < Formula
 
   skip_clean :la
 
-  depends_on 'pcre'
+  depends_on "pcre"
+  depends_on "openssl" if build.with? "brewed-openssl"
 
   def install
     args = %W[
@@ -19,7 +20,6 @@ class Httpd24 < Formula
       --sysconfdir=#{etc}/apache2
       --enable-layout=GNU
       --enable-mods-shared=all
-      --with-ssl=/usr
       --with-mpm=prefork
       --disable-unique-id
       --enable-ssl
@@ -34,6 +34,13 @@ class Httpd24 < Formula
       --enable-suexec
       --enable-rewrite
     ]
+
+    if build.with? "brewed-openssl"
+      openssl = Formula["openssl"].opt_prefix
+      args << "--with-ssl=#{openssl}"
+    else
+      args << "--with-ssl=/usr"
+    end
 
     system "./configure", *args
 

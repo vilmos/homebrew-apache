@@ -7,6 +7,8 @@ class Httpd24 < Formula
 
   skip_clean :la
 
+  depends_on 'pcre'
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",

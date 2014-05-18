@@ -16,14 +16,11 @@ class Httpd24 < Formula
   end
 
   def install
+    # install custom layout
+    File.open('config.layout', 'w') { |f| f.write(httpd_layout) };
+
     args = %W[
-      --disable-debug
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-      --mandir=#{man}
-      --localstatedir=#{var}/apache2
-      --sysconfdir=#{etc}/apache2
-      --enable-layout=GNU
+      --enable-layout=Homebrew
       --enable-mods-shared=all
       --with-mpm=prefork
       --disable-unique-id
@@ -85,6 +82,32 @@ class Httpd24 < Formula
     </plist>
     EOS
   end
+
+  def httpd_layout
+    return <<-EOS.undent
+      <Layout Homebrew>
+          prefix:        #{prefix}
+          exec_prefix:   ${prefix}
+          bindir:        ${exec_prefix}/bin
+          sbindir:       ${exec_prefix}/bin
+          libdir:        ${exec_prefix}/lib
+          libexecdir:    ${exec_prefix}/libexec
+          mandir:        #{man}
+          sysconfdir:    #{etc}/apache2
+          datadir:       #{var}/www
+          installbuilddir: ${datadir}/build
+          errordir:      ${datadir}/error
+          iconsdir:      ${datadir}/icons
+          htdocsdir:     ${datadir}/htdocs
+          manualdir:     ${datadir}/manual
+          cgidir:        #{var}/apache2/cgi-bin
+          includedir:    ${prefix}/include/apache2
+          localstatedir: #{var}/apache2
+          runtimedir:    #{var}/run/apache2
+          logfiledir:    #{var}/log/apache2
+          proxycachedir: ${localstatedir}/proxy
+      </Layout>
+      EOS
 
   test do
     system sbin/"httpd", "-v"

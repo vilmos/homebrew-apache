@@ -7,7 +7,7 @@ class Httpd24 < Formula
 
   skip_clean :la
 
-  depends_on "pcre"
+  depends_on "pcre" if build.with? "brewed-pcre"
   depends_on "openssl" if build.with? "brewed-openssl"
 
   if build.with? "brewed-apr"
@@ -55,6 +55,8 @@ class Httpd24 < Formula
     else
       args << "--with-included-apr"
     end
+
+    args << "--with-pcre=#{Formula['pcre'].opt_prefix}" if build.with? "brewed-pcre"
 
     system "./configure", *args
 

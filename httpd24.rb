@@ -10,28 +10,33 @@ class Httpd24 < Formula
   depends_on 'pcre'
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--localstatedir=#{var}/apache2",
-                          "--sysconfdir=#{etc}/apache2",
-                          "--enable-layout=GNU",
-                          "--enable-mods-shared=all",
-                          "--with-ssl=/usr",
-                          "--with-mpm=prefork",
-                          "--disable-unique-id",
-                          "--enable-ssl",
-                          "--enable-dav",
-                          "--enable-cache",
-                          "--enable-proxy",
-                          "--enable-logio",
-                          "--enable-deflate",
-                          "--with-included-apr",
-                          "--enable-cgi",
-                          "--enable-cgid",
-                          "--enable-suexec",
-                          "--enable-rewrite"
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --mandir=#{man}
+      --localstatedir=#{var}/apache2
+      --sysconfdir=#{etc}/apache2
+      --enable-layout=GNU
+      --enable-mods-shared=all
+      --with-ssl=/usr
+      --with-mpm=prefork
+      --disable-unique-id
+      --enable-ssl
+      --enable-dav
+      --enable-cache
+      --enable-proxy
+      --enable-logio
+      --enable-deflate
+      --with-included-apr
+      --enable-cgi
+      --enable-cgid
+      --enable-suexec
+      --enable-rewrite
+    ]
+
+    system "./configure", *args
+
     system "make"
     system "make install"
     (var/"apache2/log").mkpath

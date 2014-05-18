@@ -7,15 +7,17 @@ class Httpd24 < Formula
 
   skip_clean :la
 
-  depends_on "pcre" if build.with? "brewed-pcre"
+  option "with-brewed-openssl", "Use Homebrew's SSL instead of the system version"
+
+  depends_on "apr"
+  depends_on "apr-util"
+  depends_on "pcre" => :optional
   depends_on "openssl" if build.with? "brewed-openssl"
 
-  if build.with? "brewed-apr"
-    depends_on "homebrew/dupes/apr"
-    depends_on "homebrew/dupes/apr-util"
-  end
-
   def install
+    apr = Formula["apr"].opt_prefix
+    aprutil = Formula["apr-util"].opt_prefix
+
     # install custom layout
     File.open('config.layout', 'w') { |f| f.write(httpd_layout) };
 
@@ -34,6 +36,8 @@ class Httpd24 < Formula
       --enable-cgid
       --enable-suexec
       --enable-rewrite
+      --with-apr=#{apr}
+      --with-apr-util=#{aprutil}
     ]
 
     if build.with? "brewed-openssl"
@@ -43,17 +47,7 @@ class Httpd24 < Formula
       args << "--with-ssl=/usr"
     end
 
-    if build.with? "brewed-apr"
-      apr = Formula["apr"].opt_prefix
-      aprutil = Formula["apr-util"].opt_prefix
-
-      args << "--with-apr=#{apr}"
-      args << "--with-apr-util=#{aprutil}"
-    else
-      args << "--with-included-apr"
-    end
-
-    args << "--with-pcre=#{Formula['pcre'].opt_prefix}" if build.with? "brewed-pcre"
+    args << "--with-pcre=#{Formula['pcre'].opt_prefix}" if build.with? "pcre"
 
     system "./configure", *args
 

@@ -47,7 +47,7 @@ class Httpd24 < Formula
       apr = Formula["apr"].opt_prefix
       aprutil = Formula["apr-util"].opt_prefix
 
-      args << "--with-apr=#{apr}",
+      args << "--with-apr=#{apr}"
       args << "--with-apr-util=#{aprutil}"
     else
       args << "--with-included-apr"
@@ -108,6 +108,7 @@ class Httpd24 < Formula
           proxycachedir: ${localstatedir}/proxy
       </Layout>
       EOS
+  end
 
   test do
     system sbin/"httpd", "-v"

@@ -10,6 +10,11 @@ class Httpd24 < Formula
   depends_on "pcre"
   depends_on "openssl" if build.with? "brewed-openssl"
 
+  if build.with? "brewed-apr"
+    depends_on "homebrew/dupes/apr"
+    depends_on "homebrew/dupes/apr-util"
+  end
+
   def install
     args = %W[
       --disable-debug
@@ -28,7 +33,6 @@ class Httpd24 < Formula
       --enable-proxy
       --enable-logio
       --enable-deflate
-      --with-included-apr
       --enable-cgi
       --enable-cgid
       --enable-suexec
@@ -40,6 +44,16 @@ class Httpd24 < Formula
       args << "--with-ssl=#{openssl}"
     else
       args << "--with-ssl=/usr"
+    end
+
+    if build.with? "brewed-apr"
+      apr = Formula["apr"].opt_prefix
+      aprutil = Formula["apr-util"].opt_prefix
+
+      args << "--with-apr=#{apr}",
+      args << "--with-apr-util=#{aprutil}"
+    else
+      args << "--with-included-apr"
     end
 
     system "./configure", *args

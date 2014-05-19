@@ -8,6 +8,7 @@ class Httpd24 < Formula
   skip_clean :la
 
   option "with-brewed-openssl", "Use Homebrew's SSL instead of the system version"
+  option "with-privileged-ports", "Use the default ports 80 and 443 (which require root privileges), instead of 8080 and 8443"
 
   depends_on "apr"
   depends_on "apr-util"
@@ -45,6 +46,14 @@ class Httpd24 < Formula
       args << "--with-ssl=#{openssl}"
     else
       args << "--with-ssl=/usr"
+    end
+
+    if build.with? "privileged-ports"
+      args << "--with-port=80"
+      args << "--with-sslport=443"
+    else
+      args << "--with-port=8080"
+      args << "--with-sslport=8443"
     end
 
     args << "--with-pcre=#{Formula['pcre'].opt_prefix}" if build.with? "pcre"

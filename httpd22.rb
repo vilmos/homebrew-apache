@@ -7,29 +7,68 @@ class Httpd22 < Formula
 
   skip_clean :la
 
+  option "with-brewed-apr", "Use Homebrew's apr and apr-util instead of the bundled versions"
+  option "with-brewed-openssl", "Use Homebrew's SSL instead of the system version"
+  option "with-privileged-ports", "Use the default ports 80 and 443 (which require root privileges), instead of 8080 and 8443"
+
+  if build.with? "brewed-apr"
+    depends_on "apr"
+    depends_on "apr-util"
+  end
+
+  depends_on "pcre" => :optional
+  depends_on "openssl" if build.with? "brewed-openssl"
+
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--localstatedir=#{var}/apache2",
-                          "--sysconfdir=#{etc}/apache2",
-                          "--enable-layout=GNU",
-                          "--enable-mods-shared=all",
-                          "--with-ssl=/usr",
-                          "--with-mpm=prefork",
-                          "--disable-unique-id",
-                          "--enable-ssl",
-                          "--enable-dav",
-                          "--enable-cache",
-                          "--enable-proxy",
-                          "--enable-logio",
-                          "--enable-deflate",
-                          "--with-included-apr",
-                          "--enable-cgi",
-                          "--enable-cgid",
-                          "--enable-suexec",
-                          "--enable-rewrite"
+    # install custom layout
+    File.open('config.layout', 'w') { |f| f.write(httpd_layout) };
+
+    args = %W[
+      --enable-layout=Homebrew
+      --enable-mods-shared=all
+      --with-mpm=prefork
+      --disable-unique-id
+      --enable-ssl
+      --enable-dav
+      --enable-cache
+      --enable-proxy
+      --enable-logio
+      --enable-deflate
+      --enable-cgi
+      --enable-cgid
+      --enable-suexec
+      --enable-rewrite
+    ]
+
+    if build.with? "brewed-openssl"
+      openssl = Formula["openssl"].opt_prefix
+      args << "--with-ssl=#{openssl}"
+    else
+      args << "--with-ssl=/usr"
+    end
+
+    if build.with? "privileged-ports"
+      args << "--with-port=80"
+      args << "--with-sslport=443"
+    else
+      args << "--with-port=8080"
+      args << "--with-sslport=8443"
+    end
+
+    if build.with? "brewed-apr"
+      apr = Formula["apr"].opt_prefix
+      aprutil = Formula["apr-util"].opt_prefix
+
+      args << "--with-apr=#{apr}"
+      args << "--with-apr-util=#{aprutil}"
+    else
+      args << "--with-included-apr"
+    end
+
+    args << "--with-pcre=#{Formula['pcre'].opt_prefix}" if build.with? "pcre"
+
+    system "./configure", *args
+
     system "make"
     system "make install"
     (var/"apache2/log").mkpath
@@ -54,6 +93,33 @@ class Httpd22 < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  def httpd_layout
+    return <<-EOS.undent
+      <Layout Homebrew>
+          prefix:        #{prefix}
+          exec_prefix:   ${prefix}
+          bindir:        ${exec_prefix}/bin
+          sbindir:       ${exec_prefix}/bin
+          libdir:        ${exec_prefix}/lib
+          libexecdir:    ${exec_prefix}/libexec
+          mandir:        #{man}
+          sysconfdir:    #{etc}/apache2
+          datadir:       #{var}/www
+          installbuilddir: ${datadir}/build
+          errordir:      ${datadir}/error
+          iconsdir:      ${datadir}/icons
+          htdocsdir:     ${datadir}/htdocs
+          manualdir:     ${datadir}/manual
+          cgidir:        #{var}/apache2/cgi-bin
+          includedir:    ${prefix}/include/apache2
+          localstatedir: #{var}/apache2
+          runtimedir:    #{var}/run/apache2
+          logfiledir:    #{var}/log/apache2
+          proxycachedir: ${localstatedir}/proxy
+      </Layout>
+      EOS
   end
 
   test do

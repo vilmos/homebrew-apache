@@ -105,7 +105,7 @@ class Httpd22 < Formula
           libdir:        ${exec_prefix}/lib
           libexecdir:    ${exec_prefix}/libexec
           mandir:        #{man}
-          sysconfdir:    #{etc}/apache2
+          sysconfdir:    #{etc}/apache2/2.2
           datadir:       #{var}/www
           installbuilddir: ${datadir}/build
           errordir:      ${datadir}/error

@@ -12,7 +12,7 @@ class Httpd24 < Formula
 
   depends_on "apr"
   depends_on "apr-util"
-  depends_on "pcre" => :optional
+  depends_on "pcre"
   depends_on "openssl" if build.with? "brewed-openssl"
 
   def install
@@ -96,7 +96,7 @@ class Httpd24 < Formula
           libdir:        ${exec_prefix}/lib
           libexecdir:    ${exec_prefix}/libexec
           mandir:        #{man}
-          sysconfdir:    #{etc}/apache2
+          sysconfdir:    #{etc}/apache2/2.4
           datadir:       #{var}/www
           installbuilddir: ${datadir}/build
           errordir:      ${datadir}/error

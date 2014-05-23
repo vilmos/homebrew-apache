@@ -84,7 +84,7 @@ class Httpd22 < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/httpd</string>
+        <string>#{opt_prefix}/bin/httpd</string>
         <string>-D</string>
         <string>FOREGROUND</string>
       </array>

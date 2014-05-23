@@ -5,6 +5,8 @@ class Httpd24 < Formula
   url "https://www.apache.org/dist/httpd/httpd-2.4.9.tar.bz2"
   sha1 "646aedbf59519e914c424b3a85d846bf189be3f4"
 
+  conflicts_with "httpd22", :because => "different versions of the same software"
+
   skip_clean :la
 
   option "with-brewed-openssl", "Use Homebrew's SSL instead of the system version"

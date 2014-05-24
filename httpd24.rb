@@ -21,6 +21,10 @@ class Httpd24 < Formula
     apr = Formula["apr"].opt_prefix
     aprutil = Formula["apr-util"].opt_prefix
 
+    # point config files to opt_prefix instead of the version-specific prefix
+    inreplace "makefile.in",
+      '#@@ServerRoot@@#$(prefix)#', '#@@ServerRoot@@'"##{opt_prefix}#"
+
     # install custom layout
     File.open('config.layout', 'w') { |f| f.write(httpd_layout) };
 

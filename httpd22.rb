@@ -22,6 +22,10 @@ class Httpd22 < Formula
   depends_on "openssl" if build.with? "brewed-openssl"
 
   def install
+    # point config files to opt_prefix instead of the version-specific prefix
+    inreplace "makefile.in",
+      '#@@ServerRoot@@#$(prefix)#', '#@@ServerRoot@@'"##{opt_prefix}#"
+
     # install custom layout
     File.open('config.layout', 'w') { |f| f.write(httpd_layout) };
 

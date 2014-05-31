@@ -36,7 +36,6 @@ class Httpd24 < Formula
       --enable-ssl
       --enable-dav
       --enable-cache
-      --enable-proxy
       --enable-logio
       --enable-deflate
       --enable-cgi

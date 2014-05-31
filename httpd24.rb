@@ -69,6 +69,8 @@ class Httpd24 < Formula
     system "make install"
     (var/"apache2/log").mkpath
     (var/"apache2/run").mkpath
+    FileUtils.touch("#{var}/log/apache2/access_log") unless File.exists?("#{var}/log/apache2/access_log")
+    FileUtils.touch("#{var}/log/apache2/error_log") unless File.exists?("#{var}/log/apache2/error_log")
   end
 
   def plist; <<-EOS.undent

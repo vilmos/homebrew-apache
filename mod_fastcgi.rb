@@ -5,26 +5,55 @@ class ModFastcgi < Formula
   homepage 'http://www.fastcgi.com/'
   sha1 '69c56548bf97040a61903b32679fe3e3b7d3c2d4'
 
+  option "with-brewed-httpd22", "Use Homebrew's Apache httpd 2.2"
+  option "with-brewed-httpd24", "Use Homebrew's Apache httpd 2.4"
+
+  depends_on "httpd22" if build.with? "brewed-httpd22"
+  depends_on "httpd24" if build.with? "brewed-httpd24"
+
+  def apache_apxs
+    if build.with? "brewed-httpd22"
+      ['sbin', 'bin'].each do |dir|
+        if File.exist?(location = "#{Formula['httpd22'].opt_prefix}/#{dir}/apxs")
+          return location
+        end
+      end
+    elsif build.with? "brewed-httpd24"
+      ['sbin', 'bin'].each do |dir|
+        if File.exist?(location = "#{Formula['httpd24'].opt_prefix}/#{dir}/apxs")
+          return location
+        end
+      end
+    else
+      "/usr/sbin/apxs"
+    end
+  end
+
+  def apache_configdir
+    if build.with? "brewed-httpd22"
+      "#{etc}/apache2/2.2"
+    elsif build.with? "brewed-httpd24"
+      "#{etc}/apache2/2.4"
+    else
+      "/etc/apache2"
+    end
+  end
+
   def install
-    target_arch = MacOS.prefer_64_bit? ? "x86_64" : "i386"
-    system "cp Makefile.AP2 Makefile"
-    ENV.append_to_cflags "-mmacosx-version-min=#{MACOS_VERSION}"
-    ENV.append_to_cflags "-isysroot #{MacOS.sdk_path}"
-    ENV.append_to_cflags "-arch #{target_arch}"
-    system "make", "top_dir=/usr/share/httpd"
-    libexec.install '.libs/mod_fastcgi.so'
+    system "#{apache_apxs} -o mod_fastcgi.so -c *.c"
+    libexec.install ".libs/mod_fastcgi.so"
   end
 
   def caveats; <<-EOS.undent
-    NOTE: If you're having installation problems relating to a missing `cc` compiler and
-    `OSX10.8.xctoolchain` or `OSX10.9.xctoolchain`, read the "Troubleshooting" section
-    of https://github.com/Homebrew/homebrew-apache
-
-    You must manually edit /etc/apache2/httpd.conf to contain:
+    You must manually edit #{apache_configdir}/httpd.conf to contain:
       LoadModule fastcgi_module #{libexec}/mod_fastcgi.so
 
     Upon restarting Apache, you should see the following message in the error log:
       [notice] FastCGI: process manager initialized
+
+    NOTE: If you're _NOT_ using --with-brewed-httpd22 or --with-brewed-httpd24 and having
+    installation problems relating to a missing `cc` compiler and `OSX#{MACOS_VERSION}.xctoolchain`,
+    read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS
   end
 

@@ -6,7 +6,7 @@ class ModFastcgi < Formula
   sha1 '69c56548bf97040a61903b32679fe3e3b7d3c2d4'
 
   option "with-brewed-httpd22", "Use Homebrew's Apache httpd 2.2"
-  option "with-brewed-httpd24", "Use Homebrew's Apache httpd 2.4"
+  # option "with-brewed-httpd24", "Use Homebrew's Apache httpd 2.4"
 
   depends_on "httpd22" if build.with? "brewed-httpd22"
   depends_on "httpd24" if build.with? "brewed-httpd24"

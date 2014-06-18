@@ -23,7 +23,7 @@ class Httpd22 < Formula
 
   def install
     # point config files to opt_prefix instead of the version-specific prefix
-    inreplace "makefile.in",
+    inreplace "Makefile.in",
       '#@@ServerRoot@@#$(prefix)#', '#@@ServerRoot@@'"##{opt_prefix}#"
 
     # install custom layout

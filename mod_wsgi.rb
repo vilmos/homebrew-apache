@@ -7,12 +7,18 @@ class ModWsgi < Formula
 
   head 'http://modwsgi.googlecode.com/svn/trunk/mod_wsgi'
 
+  option 'with-brewed-python', 'Use Homebrew python instead of system python'
+
+  depends_on 'python' if build.with? 'brewed-python'
+
   def install
     # Remove a flag added when homebrew isn't in /usr/local
     # causes apxs to fail with "unknown flags" error
     ENV.remove 'CPPFLAGS', "-isystem #{HOMEBREW_PREFIX}/include"
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--disable-framework"
+    args = "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--disable-framework"
+    args << "--with-python=#{HOMEBREW_PREFIX}/bin/python" if build.with? "brewed-python"
+    system "./configure", *args
 
     # We need apxs to specify the right compiler to its libtool, but
     # doing so causes libtool to die unless this flag is also set

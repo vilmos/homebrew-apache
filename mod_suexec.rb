@@ -22,6 +22,7 @@ class ModSuexec < Formula
     end
 
     system "./configure",
+      "LTFLAGS=--tag=cc",
       "--enable-suexec=shared",
       "--with-suexec-bin=#{suexecbin}",
       "--with-suexec-caller=_www",

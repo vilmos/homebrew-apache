@@ -7,53 +7,66 @@ class ModWsgi < Formula
 
   head 'http://modwsgi.googlecode.com/svn/trunk/mod_wsgi'
 
-  option 'with-brewed-python', 'Use Homebrew python instead of system python'
+  option 'with-brewed-httpd22', 'Use Homebrew Apache httpd 2.2'
+  option 'with-brewed-httpd24', 'Use Homebrew Apache httpd 2.4'
+  option 'with-brewed-python', 'Use Homebrew python'
 
+  depends_on 'httpd22' if build.with? 'brewed-httpd22'
+  depends_on 'httpd24' if build.with? 'brewed-httpd24'
   depends_on 'python' if build.with? 'brewed-python'
 
+  def apache_apxs
+    if build.with? 'brewed-httpd22'
+      ['sbin', 'bin'].each do |dir|
+        if File.exist?(location = "#{Formula['httpd22'].opt_prefix}/#{dir}/apxs")
+          return location
+        end
+      end
+    elsif build.with? 'brewed-httpd24'
+      ['sbin', 'bin'].each do |dir|
+        if File.exist?(location = "#{Formula['httpd24'].opt_prefix}/#{dir}/apxs")
+          return location
+        end
+      end
+    else
+      '/usr/sbin/apxs'
+    end
+  end
+
+  def apache_configdir
+    if build.with? 'brewed-httpd22'
+      "#{etc}/apache2/2.2"
+    elsif build.with? 'brewed-httpd24'
+      "#{etc}/apache2/2.4"
+    else
+      '/etc/apache2'
+    end
+  end
+
   def install
-    # Remove a flag added when homebrew isn't in /usr/local
-    # causes apxs to fail with "unknown flags" error
-    ENV.remove 'CPPFLAGS', "-isystem #{HOMEBREW_PREFIX}/include"
-
     args = "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--disable-framework"
+    args << "--with-apxs=#{apache_apxs}"
     args << "--with-python=#{HOMEBREW_PREFIX}/bin/python" if build.with? "brewed-python"
-    system "./configure", *args
-
-    # We need apxs to specify the right compiler to its libtool, but
-    # doing so causes libtool to die unless this flag is also set
-    ENV['LTFLAGS'] = '--tag=CC'
+    system './configure', *args
 
     inreplace 'Makefile' do |s|
-      # APXS uses just "gcc" unless we specify CC this way
-      s.gsub! '$(APXS)', "$(APXS) -S CC=#{ENV.cc}"
-      # Remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
-      cflags = s.get_make_var("CFLAGS")
-      cflags.gsub! "-Wc,'-arch ppc7400'", ""
-      cflags.gsub! "-Wc,'-arch ppc64'", ""
-      cflags.gsub! "-Wc,'-arch x86_64'", "" if Hardware.is_32_bit?
-      s.change_make_var! "CFLAGS", cflags
-
       # --libexecdir parameter to ./configure isn't changing this, so cram it in
       # This will be where the Apache module ends up, and we don't want to touch
       # the system libexec.
-      s.change_make_var! "LIBEXECDIR", libexec
+      s.change_make_var! 'LIBEXECDIR', libexec
     end
 
-    system "make install"
+    system 'make install'
   end
 
   def caveats
     <<-EOS.undent
-    NOTE: If you're having installation problems relating to a missing `cc` compiler and
-    `OSX10.8.xctoolchain` or `OSX10.9.xctoolchain`, read the "Troubleshooting" section
-    of https://github.com/Homebrew/homebrew-apache
-
-    You must manually edit /etc/apache2/httpd.conf to include
+    You must manually edit #{apache_configdir}/httpd.conf to include
       LoadModule wsgi_module #{libexec}/mod_wsgi.so
 
-    On 10.5, you must run Apache in 32-bit mode:
-      http://code.google.com/p/modwsgi/wiki/InstallationOnMacOSX
+    NOTE: If you're _NOT_ using --with-brewed-httpd22 or --with-brewed-httpd24 and having
+    installation problems relating to a missing `cc` compiler and `OSX#{MACOS_VERSION}.xctoolchain`,
+    read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS
   end
 end

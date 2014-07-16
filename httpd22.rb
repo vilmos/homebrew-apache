@@ -11,6 +11,7 @@ class Httpd22 < Formula
 
   option "with-brewed-apr", "Use Homebrew's apr and apr-util instead of the bundled versions"
   option "with-brewed-openssl", "Use Homebrew's SSL instead of the system version"
+  option "with-brewed-zlib", "Use Homebrew's zlib instead of the system version"
   option "with-privileged-ports", "Use the default ports 80 and 443 (which require root privileges), instead of 8080 and 8443"
 
   if build.with? "brewed-apr"
@@ -20,6 +21,7 @@ class Httpd22 < Formula
 
   depends_on "pcre" => :optional
   depends_on "openssl" if build.with? "brewed-openssl"
+  depends_on "homebrew/dupes/zlib" if build.with? "brewed-zlib"
 
   def install
     # point config files to opt_prefix instead of the version-specific prefix
@@ -72,6 +74,8 @@ class Httpd22 < Formula
     end
 
     args << "--with-pcre=#{Formula['pcre'].opt_prefix}" if build.with? "pcre"
+
+    args << "--with-z=#{Formula['zlib'].opt_prefix}" if build.with? "brewed-zlib"
 
     system "./configure", *args
 

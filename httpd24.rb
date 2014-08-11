@@ -123,4 +123,22 @@ class Httpd24 < Formula
   test do
     system sbin/"httpd", "-v"
   end
+
+  def caveats
+    if build.with? "privileged-ports"
+      <<-EOS.undent
+      To load #{name} when --with-privileged-ports is used:
+          sudo cp -v #{plist_path} /Library/LaunchDaemons
+          sudo chown -v root:wheel /Library/LaunchDaemons/#{plist_path.basename}
+          sudo chmod -v 644 /Library/LaunchDaemons/#{plist_path.basename}
+          sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
+
+      To reload #{name} after an upgrade when --with-privileged-ports is used:
+          sudo launchctl unload /Library/LaunchDaemons/#{plist_path.basename}
+          sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
+
+      If not using --with-privileged-ports, use the instructions below.
+      EOS
+    end
+  end
 end

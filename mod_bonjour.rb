@@ -1,29 +1,51 @@
 require 'formula'
 
 class ModBonjour < Formula
-  homepage 'http://www.opensource.apple.com/source/apache_mod_bonjour/apache_mod_bonjour-15/'
-  url 'http://www.opensource.apple.com/tarballs/apache_mod_bonjour/apache_mod_bonjour-15.tar.gz'
-  sha1 '1b9574e4ba391c87f19de18bf6295b55cf298c89'
-  version '1.5'
+  homepage 'http://www.opensource.apple.com/source/apache_mod_bonjour/apache_mod_bonjour-23/'
+  url 'http://www.opensource.apple.com/tarballs/apache_mod_bonjour/apache_mod_bonjour-23.tar.gz'
+  sha1 '597ad957a6524ba05e03e2679fe622abdb2662f8'
+  version '2.3'
 
-  depends_on :xcode
+  option 'with-brewed-httpd22', 'Use Homebrew Apache httpd 2.2'
+  option 'with-brewed-httpd24', 'Use Homebrew Apache httpd 2.4'
+
+  def apache_apxs
+    if build.with? 'brewed-httpd22'
+      ['sbin', 'bin'].each do |dir|
+        if File.exist?(location = "#{Formula['httpd22'].opt_prefix}/#{dir}/apxs")
+          return location
+        end
+      end
+    elsif build.with? 'brewed-httpd24'
+      ['sbin', 'bin'].each do |dir|
+        if File.exist?(location = "#{Formula['httpd24'].opt_prefix}/#{dir}/apxs")
+          return location
+        end
+      end
+    else
+      '/usr/sbin/apxs'
+    end
+  end
+
+  def apache_configdir
+    if build.with? 'brewed-httpd22'
+      "#{etc}/apache2/2.2"
+    elsif build.with? 'brewed-httpd24'
+      "#{etc}/apache2/2.4"
+    else
+      '/etc/apache2'
+    end
+  end
 
   def install
-    system "make install INSTALLDIR2=#{libexec}"
+    system "#{apache_apxs} -o mod_bonjour.so -c *.c"
+    libexec.install ".libs/mod_bonjour.so"
   end
 
   def caveats
     <<-EOS.undent
-    NOTE: If you're having installation problems relating to a missing `cc` compiler and
-    `OSX10.8.xctoolchain` or `OSX10.9.xctoolchain`, read the "Troubleshooting" section
-    of https://github.com/Homebrew/homebrew-apache
-
-    You're not done yet!
-    To enable mod_bonjour in Apache, add the following to httpd.conf and restart Apache:
-        LoadModule bonjour_module #{libexec}/mod_bonjour.so
-
-    If you are running OS X Lion 10.7 or earlier, you will need to comment out the line
-    in httpd.conf for the built-in mod_bonjour.so module and use only this one.
+    You must manually edit #{apache_configdir}/httpd.conf to include
+      LoadModule bonjour_module #{libexec}/mod_bonjour.so
 
     Add the following to your virtual host conf files to advertise them on bonjour. The
     last number is whatever port the virtual host is listening on.
@@ -31,6 +53,11 @@ class ModBonjour < Formula
         <IfModule bonjour_module>
             RegisterResource "Site Title" / 80
         </IfModule>
+
+    NOTE: If you're _NOT_ using --with-brewed-httpd22 or --with-brewed-httpd24 and having
+    installation problems relating to a missing `cc` compiler and `OSX#{MACOS_VERSION}.xctoolchain`,
+    read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS
   end
+
 end

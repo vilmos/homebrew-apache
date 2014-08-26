@@ -75,7 +75,11 @@ class Httpd22 < Formula
 
     args << "--with-pcre=#{Formula['pcre'].opt_prefix}" if build.with? "pcre"
 
-    args << "--with-z=#{Formula['zlib'].opt_prefix}" if build.with? "brewed-zlib"
+    if build.with? "brewed-zlib"
+      args << "--with-z=#{Formula['zlib'].opt_prefix}"
+    else
+      args << "--with-z=#{MacOS.sdk_path}/usr"
+    end
 
     system "./configure", *args
 

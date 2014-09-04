@@ -9,12 +9,17 @@ class Httpd24 < Formula
 
   skip_clean :la
 
+  option "with-brewed-apr", "Use Homebrew's apr and apr-util instead of the bundled versions"
   option "with-brewed-openssl", "Use Homebrew's SSL instead of the system version"
   option "with-brewed-zlib", "Use Homebrew's zlib instead of the system version"
+  option "with-ldap", "Include support for LDAP"
   option "with-privileged-ports", "Use the default ports 80 and 443 (which require root privileges), instead of 8080 and 8443"
 
-  depends_on "apr"
-  depends_on "apr-util"
+  if build.with? "brewed-apr"
+    depends_on "homebrew/dupes/apr"
+    depends_on "homebrew/dupes/apr-util"
+  end
+
   depends_on "pcre"
   depends_on "openssl" if build.with? "brewed-openssl"
   depends_on "homebrew/dupes/zlib" if build.with? "brewed-zlib"
@@ -44,8 +49,6 @@ class Httpd24 < Formula
       --enable-cgid
       --enable-suexec
       --enable-rewrite
-      --with-apr=#{apr}
-      --with-apr-util=#{aprutil}
     ]
 
     if build.with? "brewed-openssl"
@@ -55,12 +58,38 @@ class Httpd24 < Formula
       args << "--with-ssl=/usr"
     end
 
+    if build.with? "ldap"
+      args << "--with-ldap"
+      args << "--enable-ldap"
+      args << "--enable-authnz-ldap"
+    end
+
     if build.with? "privileged-ports"
       args << "--with-port=80"
       args << "--with-sslport=443"
     else
       args << "--with-port=8080"
       args << "--with-sslport=8443"
+    end
+
+    if build.with? "brewed-apr"
+      apr = Formula["apr"].opt_prefix
+      aprutil = Formula["apr-util"].opt_prefix
+
+      args << "--with-apr=#{apr}"
+      args << "--with-apr-util=#{aprutil}"
+    else
+      mkdir_p "#{buildpath}/srclib/apr"
+      mkdir_p "#{buildpath}/srclib/apr-util"
+
+      require 'net/http'
+      File.write("#{buildpath}/srclib/apr-1.5.1.tar.gz", Net::HTTP.get(URI.parse('https://archive.apache.org/dist/apr/apr-1.5.1.tar.gz')))
+      File.write("#{buildpath}/srclib/apr-util-1.5.3.tar.gz", Net::HTTP.get(URI.parse('https://archive.apache.org/dist/apr/apr-util-1.5.3.tar.gz')))
+
+      system 'tar', '-zxpv', '-C', "#{buildpath}/srclib/apr", '--strip-components=1', '-f', "#{buildpath}/srclib/apr-1.5.1.tar.gz"
+      system 'tar', '-zxpv', '-C', "#{buildpath}/srclib/apr-util", '--strip-components=1', '-f', "#{buildpath}/srclib/apr-util-1.5.3.tar.gz"
+
+      args << "--with-included-apr"
     end
 
     args << "--with-pcre=#{Formula['pcre'].opt_prefix}" if build.with? "pcre"

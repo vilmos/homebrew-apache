@@ -1,9 +1,11 @@
 require 'formula'
 
 class ModSuexec < Formula
-  url 'http://archive.apache.org/dist/httpd/httpd-2.2.22.tar.bz2'
   homepage 'http://httpd.apache.org/docs/current/suexec.html'
-  sha1 '766cd0843050a8dfb781e48b976f3ba6ebcf8696'
+  url 'http://archive.apache.org/dist/httpd/httpd-2.2.22.tar.bz2' if MacOS.version == :mountain_lion
+  sha1 '766cd0843050a8dfb781e48b976f3ba6ebcf8696' if MacOS.version == :mountain_lion
+  url 'http://archive.apache.org/dist/httpd/httpd-2.2.26.tar.bz2' if MacOS.version == :mavericks
+  sha1 'ecfa7dab239ef177668ad1d5cf9d03c4602607b8' if MacOS.version == :mavericks
 
   depends_on 'libtool'
 

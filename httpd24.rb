@@ -36,7 +36,7 @@ class Httpd24 < Formula
       --enable-layout=Homebrew
       --enable-mods-shared=all
       --with-mpm=prefork
-      --disable-unique-id
+      --enable-unique-id
       --enable-ssl
       --enable-dav
       --enable-cache

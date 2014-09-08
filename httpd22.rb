@@ -65,11 +65,8 @@ class Httpd22 < Formula
     end
 
     if build.with? "brewed-apr"
-      apr = Formula["apr"].opt_prefix
-      aprutil = Formula["apr-util"].opt_prefix
-
-      args << "--with-apr=#{apr}"
-      args << "--with-apr-util=#{aprutil}"
+      args << "--with-apr=#{Formula["apr"].opt_prefix}"
+      args << "--with-apr-util=#{Formula["apr-util"].opt_prefix}"
     else
       args << "--with-included-apr"
     end

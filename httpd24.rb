@@ -25,9 +25,6 @@ class Httpd24 < Formula
   depends_on "homebrew/dupes/zlib" if build.with? "brewed-zlib"
 
   def install
-    apr = Formula["apr"].opt_prefix
-    aprutil = Formula["apr-util"].opt_prefix
-
     # point config files to opt_prefix instead of the version-specific prefix
     inreplace "makefile.in",
       '#@@ServerRoot@@#$(prefix)#', '#@@ServerRoot@@'"##{opt_prefix}#"
@@ -73,11 +70,8 @@ class Httpd24 < Formula
     end
 
     if build.with? "brewed-apr"
-      apr = Formula["apr"].opt_prefix
-      aprutil = Formula["apr-util"].opt_prefix
-
-      args << "--with-apr=#{apr}"
-      args << "--with-apr-util=#{aprutil}"
+      args << "--with-apr=#{Formula["apr"].opt_prefix}"
+      args << "--with-apr-util=#{Formula["apr-util"].opt_prefix}"
     else
       mkdir_p "#{buildpath}/srclib/apr"
       mkdir_p "#{buildpath}/srclib/apr-util"

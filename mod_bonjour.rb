@@ -9,6 +9,9 @@ class ModBonjour < Formula
   option 'with-brewed-httpd22', 'Use Homebrew Apache httpd 2.2'
   option 'with-brewed-httpd24', 'Use Homebrew Apache httpd 2.4'
 
+  depends_on "httpd22" if build.with? "brewed-httpd22"
+  depends_on "httpd24" if build.with? "brewed-httpd24"
+
   def apache_apxs
     if build.with? 'brewed-httpd22'
       ['sbin', 'bin'].each do |dir|

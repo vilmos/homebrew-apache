@@ -1,11 +1,11 @@
 require 'formula'
 
 class ModWsgi < Formula
-  homepage 'http://code.google.com/p/modwsgi/'
-  url 'http://modwsgi.googlecode.com/files/mod_wsgi-3.4.tar.gz'
-  sha1 '92ebc48e60ab658a984f97fd40cb71e0ae895469'
+  homepage 'http://modwsgi.readthedocs.org/en/latest/'
+  url 'https://github.com/GrahamDumpleton/mod_wsgi/archive/3.5.tar.gz'
+  sha1 '57552287ced75e5fd0b2b00fb186f963f9c4236b'
 
-  head 'http://modwsgi.googlecode.com/svn/trunk/mod_wsgi'
+  head 'https://github.com/GrahamDumpleton/mod_wsgi.git'
 
   option 'with-brewed-httpd22', 'Use Homebrew Apache httpd 2.2'
   option 'with-brewed-httpd24', 'Use Homebrew Apache httpd 2.4'
@@ -46,7 +46,7 @@ class ModWsgi < Formula
   def install
     args = "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--disable-framework"
     args << "--with-apxs=#{apache_apxs}"
-    args << "--with-python=#{HOMEBREW_PREFIX}/bin/python" if build.with? "brewed-python"
+    args << "--with-python=#{HOMEBREW_PREFIX}/bin/python" if build.with? 'brewed-python'
     system './configure', *args
 
     inreplace 'Makefile' do |s|

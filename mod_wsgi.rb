@@ -44,23 +44,17 @@ class ModWsgi < Formula
   end
 
   def install
-    args = "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--disable-framework"
+    args = "--prefix=#{prefix}", '--disable-framework'
     args << "--with-apxs=#{apache_apxs}"
     args << "--with-python=#{HOMEBREW_PREFIX}/bin/python" if build.with? 'brewed-python'
     system './configure', *args
 
-    inreplace 'Makefile' do |s|
-      # --libexecdir parameter to ./configure isn't changing this, so cram it in
-      # This will be where the Apache module ends up, and we don't want to touch
-      # the system libexec.
-      s.change_make_var! 'LIBEXECDIR', libexec
-    end
+    system 'make'
 
-    system 'make install'
+    libexec.install '.libs/mod_wsgi.so'
   end
 
-  def caveats
-    <<-EOS.undent
+  def caveats; <<-EOS.undent
     You must manually edit #{apache_configdir}/httpd.conf to include
       LoadModule wsgi_module #{libexec}/mod_wsgi.so
 
@@ -69,4 +63,5 @@ class ModWsgi < Formula
     read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS
   end
+
 end

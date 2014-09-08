@@ -5,32 +5,61 @@ class ModPython < Formula
   url 'http://dist.modpython.org/dist/mod_python-3.5.0.tgz'
   sha1 '9208bb813172ab51d601d78e439ea552f676d2d1'
 
-  def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+  option 'with-brewed-httpd22', 'Use Homebrew Apache httpd 2.2'
+  option 'with-brewed-httpd24', 'Use Homebrew Apache httpd 2.4'
+  option 'with-brewed-python', 'Use Homebrew python'
 
-    # Explicitly set the arch in CFLAGS so the PSPModule will build against system Python
-    # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
-    archs = archs_for_command("python")
-    archs.remove_ppc!
-    ENV.append_to_cflags archs.as_arch_flags
+  depends_on 'httpd22' if build.with? 'brewed-httpd22'
+  depends_on 'httpd24' if build.with? 'brewed-httpd24'
+  depends_on 'python' if build.with? 'brewed-python'
 
-    # Don't install to the system Apache libexec folder
-    inreplace 'Makefile' do |s|
-      s.change_make_var! "LIBEXECDIR", libexec
+  def apache_apxs
+    if build.with? 'brewed-httpd22'
+      ['sbin', 'bin'].each do |dir|
+        if File.exist?(location = "#{Formula['httpd22'].opt_prefix}/#{dir}/apxs")
+          return location
+        end
+      end
+    elsif build.with? 'brewed-httpd24'
+      ['sbin', 'bin'].each do |dir|
+        if File.exist?(location = "#{Formula['httpd24'].opt_prefix}/#{dir}/apxs")
+          return location
+        end
+      end
+    else
+      '/usr/sbin/apxs'
     end
+  end
 
-    system "make"
-    system "make install"
+  def apache_configdir
+    if build.with? 'brewed-httpd22'
+      "#{etc}/apache2/2.2"
+    elsif build.with? 'brewed-httpd24'
+      "#{etc}/apache2/2.4"
+    else
+      '/etc/apache2'
+    end
+  end
+
+  def install
+    args = "--prefix=#{prefix}"
+    args << "--with-apxs=#{apache_apxs}"
+    args << "--with-python=#{HOMEBREW_PREFIX}/bin/python" if build.with? 'brewed-python'
+    system './configure', *args
+
+    system 'make'
+
+    libexec.install 'src/.libs/mod_python.so'
   end
 
   def caveats; <<-EOS.undent
-    NOTE: If you're having installation problems relating to a missing `cc` compiler and
-    `OSX10.8.xctoolchain` or `OSX10.9.xctoolchain`, read the "Troubleshooting" section
-    of https://github.com/Homebrew/homebrew-apache
+    You must manually edit #{apache_configdir}/httpd.conf to include
+      LoadModule python_module #{libexec}/mod_python.so
 
-    To use mod_python, you must manually edit /etc/apache2/httpd.conf to load:
-      #{libexec}/mod_python.so
+    NOTE: If you're _NOT_ using --with-brewed-httpd22 or --with-brewed-httpd24 and having
+    installation problems relating to a missing `cc` compiler and `OSX#{MACOS_VERSION}.xctoolchain`,
+    read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS
   end
+
 end

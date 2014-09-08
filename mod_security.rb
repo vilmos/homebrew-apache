@@ -2,50 +2,100 @@ require 'formula'
 
 class ModSecurity < Formula
   homepage 'http://www.modsecurity.org/'
-  url 'https://www.modsecurity.org/tarball/2.7.7/modsecurity-apache_2.7.7.tar.gz'
-  sha1 '344c8c102d9800d48bd42eb683cd2ddd7c515be1'
+  url 'https://www.modsecurity.org/tarball/2.8.0/modsecurity-2.8.0.tar.gz'
+  sha1 '0ac3931806468eef616ee2301c98b3dd1f567f7c'
 
   depends_on 'pcre'
 
-  def apr_bin
-    Superenv.bin or "/usr/bin"
+  option 'with-brewed-apr', 'Use Homebrew apr'
+  option 'with-brewed-httpd22', 'Use Homebrew Apache httpd 2.2'
+  option 'with-brewed-httpd24', 'Use Homebrew Apache httpd 2.4'
+
+  depends_on 'homebrew/dupes/apr' if build.with? 'brewed-apr'
+  depends_on 'httpd22' if build.with? 'brewed-httpd22'
+  depends_on 'httpd24' if build.with? 'brewed-httpd24'
+
+  depends_on 'automake'
+  depends_on 'libtool'
+
+  def apache_apxs
+    if build.with? 'brewed-httpd22'
+      ['sbin', 'bin'].each do |dir|
+        if File.exist?(location = "#{Formula['httpd22'].opt_prefix}/#{dir}/apxs")
+          return location
+        end
+      end
+    elsif build.with? 'brewed-httpd24'
+      ['sbin', 'bin'].each do |dir|
+        if File.exist?(location = "#{Formula['httpd24'].opt_prefix}/#{dir}/apxs")
+          return location
+        end
+      end
+    else
+      '/usr/sbin/apxs'
+    end
+  end
+
+  def apache_configdir
+    if build.with? 'brewed-httpd22'
+      "#{etc}/apache2/2.2"
+    elsif build.with? 'brewed-httpd24'
+      "#{etc}/apache2/2.4"
+    else
+      '/etc/apache2'
+    end
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-pcre=#{HOMEBREW_PREFIX}",
-                          "--with-apr=#{apr_bin}"
+    args = "--prefix=#{prefix}", '--disable-dependency-tracking'
+    args << "--with-pcre=#{Formula['pcre'].opt_prefix}"
+    args << "--with-apxs=#{apache_apxs}"
 
-    # Don't install to the system Apache libexec folder or use non-existent CC path (OS X's `apxs -q` is bad)
-    makefiles = ['Makefile', 'apache2/Makefile', 'mlogc/Makefile', 'tests/Makefile' , 'tools/Makefile']
-    makefiles.each do |makefile|
-      inreplace makefile do |s|
-        s.change_make_var! "APXS_CC", ENV.cc
-        s.change_make_var! "APXS_MODULES", libexec
+    if build.with? 'brewed-httpd22'
+      args << "--with-apr=#{Formula['httpd22'].opt_prefix}"
+      args << "--with-apu=#{Formula['httpd22'].prefix}/bin"
+    elsif build.with? 'brewed-httpd24'
+      if build.with? 'brewed-apr'
+        args << "--with-apr=#{Formula['apr'].opt_prefix}"
+        args << "--with-apu=#{Formula['apr-util'].prefix}/bin"
+      else
+        args << "--with-apr=#{Formula['httpd24'].opt_prefix}"
+        args << "--with-apu=#{Formula['httpd24'].prefix}/bin"
       end
+    else
+      args << '--with-apr=/usr/bin'
+      args << '--with-apu=/usr/bin'
     end
 
-    system "make"
+    system './autogen.sh'
+    system './configure', *args
+    system 'make'
 
-    # mod_security's Makefile wants to copy the module to ${eprefix}/libexec, so we'll 
-    # need to create the target directory first
-    libexec.mkpath
+    libexec.install 'apache2/.libs/mod_security2.so'
 
-    system "make install"
+    # Use Homebrew paths in the sample file
+    inreplace 'modsecurity.conf-recommended' do |s|
+      s.gsub! ' /var/log', " #{var}/log"
+      s.gsub! ' /opt/modsecurity/var', " #{opt_prefix}/var"
+    end
 
-    prefix.install "modsecurity.conf-recommended"
+    prefix.install 'modsecurity.conf-recommended'
   end
 
   def caveats; <<-EOS.undent
-    To use mod_security, you must manually edit /etc/apache2/httpd.conf to load:
-      #{libexec}/mod_security2.so
+    You must manually edit #{apache_configdir}/httpd.conf to include
+      LoadModule security2_module #{libexec}/mod_security2.so
 
-    E.g.
-    LoadModule security2_module /usr/local/Cellar/mod_security/2.7.7/libexec/mod_security2.so
+    You must also uncomment a line similar to the line below in #{apache_configdir}/httpd.conf to enable unique_id_module
+      #LoadModule unique_id_module libexec/mod_unique_id.so
 
     Sample configuration file for Apache is at:
       #{prefix}/modsecurity.conf-recommended
+
+    NOTE: If you're _NOT_ using --with-brewed-httpd22 or --with-brewed-httpd24 and having
+    installation problems relating to a missing `cc` compiler and `OSX#{MACOS_VERSION}.xctoolchain`,
+    read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS
   end
+
 end

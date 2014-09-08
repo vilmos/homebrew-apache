@@ -9,8 +9,8 @@ class ModBonjour < Formula
   option 'with-brewed-httpd22', 'Use Homebrew Apache httpd 2.2'
   option 'with-brewed-httpd24', 'Use Homebrew Apache httpd 2.4'
 
-  depends_on "httpd22" if build.with? "brewed-httpd22"
-  depends_on "httpd24" if build.with? "brewed-httpd24"
+  depends_on 'httpd22' if build.with? 'brewed-httpd22'
+  depends_on 'httpd24' if build.with? 'brewed-httpd24'
 
   def apache_apxs
     if build.with? 'brewed-httpd22'
@@ -42,7 +42,7 @@ class ModBonjour < Formula
 
   def install
     system "#{apache_apxs} -o mod_bonjour.so -c *.c"
-    libexec.install ".libs/mod_bonjour.so"
+    libexec.install '.libs/mod_bonjour.so'
   end
 
   def caveats

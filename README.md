@@ -10,7 +10,7 @@ If the formula conflicts with one from mxcl/master or another tap, you can `brew
 You can also install via URL:
 
 ```
-brew install https://raw.github.com/Homebrew/homebrew-apache/master/<formula>.rb
+brew install https://raw.githubusercontent.com/Homebrew/homebrew-apache/master/<formula>.rb
 ```
 
 Docs

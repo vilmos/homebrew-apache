@@ -42,7 +42,7 @@ class ModFcgid < Formula
   end
 
   def install
-    system "APXS=#{apache_apxs} ./configure.apxs"
+    system "APXS='#{apache_apxs}' ./configure.apxs"
     system 'make'
     libexec.install 'modules/fcgid/.libs/mod_fcgid.so'
   end

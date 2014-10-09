@@ -8,7 +8,7 @@ class Ab < Formula
   keg_only :provided_by_osx
   conflicts_with "httpd22", "httpd24", :because => "both install `ab`"
 
-  depends_on "homebrew/apache/apr-util"
+  depends_on "apr-util"
   depends_on "libtool" => :build
 
   option "with-ssl-patch", 'Apply patch for: Bug 49382 - ab says "SSL read failed"'

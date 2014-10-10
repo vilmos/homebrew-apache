@@ -1,7 +1,7 @@
 language: objective-c
 before_install:
   - brew update
-  - brew outdated | cut -f 1 | xargs brew upgrade
+  - brew tap homebrew/homebrew-dupes
 install:
   - mkdir -p $(brew --repo)/Library/Taps
   - ln -s $PWD $(brew --repo)/Library/Taps/travis-testtap

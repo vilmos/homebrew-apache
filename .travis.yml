@@ -10,4 +10,5 @@ env:
   - PACKAGE=httpd22
   - PACKAGE=httpd24
 script:
-  - brew install -v $PACKAGE
+  - if [ "$PACKAGE" == "httpd22" ]; then brew install -v $PACKAGE --with-brewed-zlib; fi
+  - if [ "$PACKAGE" == "httpd24" ]; then brew install -v $PACKAGE; fi

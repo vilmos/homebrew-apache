@@ -10,5 +10,4 @@ env:
   - PACKAGE=httpd22
   - PACKAGE=httpd24
 script:
-  - if [ "$PACKAGE" != "httpd22" ]; then brew audit $PACKAGE; fi
   - brew install -v $PACKAGE

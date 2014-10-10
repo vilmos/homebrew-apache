@@ -6,6 +6,7 @@ class Ab < Formula
   sha1 "00f5c3f8274139bd6160eda2cf514fa9b74549e5"
 
   keg_only :provided_by_osx
+
   conflicts_with "httpd22", "httpd24", :because => "both install `ab`"
 
   depends_on "apr-util"

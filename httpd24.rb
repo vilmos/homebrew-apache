@@ -9,30 +9,13 @@ class Httpd24 < Formula
 
   skip_clean :la
 
-  option "with-brewed-apr", "Use Homebrew's apr and apr-util instead of the bundled versions"
   option "with-brewed-openssl", "Use Homebrew's SSL instead of the system version"
-  option "with-brewed-zlib", "Use Homebrew's zlib instead of the system version"
-  option "with-ldap", "Include support for LDAP"
   option "with-privileged-ports", "Use the default ports 80 and 443 (which require root privileges), instead of 8080 and 8443"
 
-  if build.with? "brewed-apr"
-    depends_on "apr"
-    depends_on "apr-util"
-  else
-    resource "apr" do
-      url "https://archive.apache.org/dist/apr/apr-1.5.1.tar.bz2"
-      sha1 "f94e4e0b678282e0704e573b5b2fe6d48bd1c309"
-    end
-
-    resource "apr-util" do
-      url "https://archive.apache.org/dist/apr/apr-util-1.5.4.tar.bz2"
-      sha1 "b00038b5081472ed094ced28bcbf2b5bb56c589d"
-    end
-  end
-
-  depends_on "pcre"
+  depends_on "apr-util"
   depends_on "openssl" if build.with? "brewed-openssl"
-  depends_on "homebrew/dupes/zlib" if build.with? "brewed-zlib"
+  depends_on "pcre"
+  depends_on "homebrew/dupes/zlib"
 
   def install
     # point config files to opt_prefix instead of the version-specific prefix
@@ -40,7 +23,7 @@ class Httpd24 < Formula
       '#@@ServerRoot@@#$(prefix)#', '#@@ServerRoot@@'"##{opt_prefix}#"
 
     # install custom layout
-    File.open('config.layout', 'w') { |f| f.write(httpd_layout) };
+    File.open("config.layout", "w") { |f| f.write(httpd_layout) }
 
     args = %W[
       --enable-layout=Homebrew
@@ -58,17 +41,15 @@ class Httpd24 < Formula
       --enable-rewrite
     ]
 
+    args << "--with-apr=#{Formula["apr"].opt_prefix}"
+    args << "--with-apr-util=#{Formula["apr-util"].opt_prefix}"
+    args << "--with-pcre=#{Formula['pcre'].opt_prefix}"
+    args << "--with-z=#{Formula['zlib'].opt_prefix}"
+
     if build.with? "brewed-openssl"
-      openssl = Formula["openssl"].opt_prefix
-      args << "--with-ssl=#{openssl}"
+      args << "--with-ssl=#{Formula['openssl'].opt_prefix}"
     else
       args << "--with-ssl=/usr"
-    end
-
-    if build.with? "ldap"
-      args << "--with-ldap"
-      args << "--enable-ldap"
-      args << "--enable-authnz-ldap"
     end
 
     if build.with? "privileged-ports"
@@ -79,25 +60,10 @@ class Httpd24 < Formula
       args << "--with-sslport=8443"
     end
 
-    if build.with? "brewed-apr"
-      args << "--with-apr=#{Formula["apr"].opt_prefix}"
-      args << "--with-apr-util=#{Formula["apr-util"].opt_prefix}"
-    else
-      mkdir_p "#{buildpath}/srclib/apr"
-      mkdir_p "#{buildpath}/srclib/apr-util"
-
-      resource("apr").stage { mv Dir.glob("*"), "#{buildpath}/srclib/apr" }
-      resource("apr-util").stage { mv Dir.glob("*"), "#{buildpath}/srclib/apr-util" }
-
-      args << "--with-included-apr"
-    end
-
-    args << "--with-pcre=#{Formula['pcre'].opt_prefix}" if build.with? "pcre"
-
-    if build.with? "brewed-zlib"
-      args << "--with-z=#{Formula['zlib'].opt_prefix}"
-    else
-      args << "--with-z=#{MacOS.sdk_path}/usr"
+    if build.with? "ldap"
+      args << "--with-ldap"
+      args << "--enable-ldap"
+      args << "--enable-authnz-ldap"
     end
 
     system "./configure", *args

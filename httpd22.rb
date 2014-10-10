@@ -2,27 +2,20 @@ require "formula"
 
 class Httpd22 < Formula
   homepage "https://httpd.apache.org/"
-  url "https://archive.apache.org/dist/httpd/httpd-2.2.27.tar.bz2"
-  sha1 "fd4bf18dd1b3e0d9be9e85ff7e033b2eb8aa4976"
+  url "https://archive.apache.org/dist/httpd/httpd-2.2.29.tar.bz2"
+  sha1 "1d6a8fbc1391d358cc6fe430edc16222b97258d5"
 
   conflicts_with "httpd24", :because => "different versions of the same software"
 
   skip_clean :la
 
-  option "with-brewed-apr", "Use Homebrew's apr and apr-util instead of the bundled versions"
   option "with-brewed-openssl", "Use Homebrew's SSL instead of the system version"
-  option "with-brewed-zlib", "Use Homebrew's zlib instead of the system version"
-  option "with-ldap", "Include support for LDAP"
   option "with-privileged-ports", "Use the default ports 80 and 443 (which require root privileges), instead of 8080 and 8443"
 
-  if build.with? "brewed-apr"
-    depends_on "apr"
-    depends_on "apr-util"
-  end
-
-  depends_on "pcre" => :optional
+  depends_on "apr-util"
   depends_on "openssl" if build.with? "brewed-openssl"
-  depends_on "homebrew/dupes/zlib" if build.with? "brewed-zlib"
+  depends_on "pcre" => :optional
+  depends_on "homebrew/dupes/zlib"
 
   def install
     # point config files to opt_prefix instead of the version-specific prefix
@@ -30,7 +23,7 @@ class Httpd22 < Formula
       '#@@ServerRoot@@#$(prefix)#', '#@@ServerRoot@@'"##{opt_prefix}#"
 
     # install custom layout
-    File.open('config.layout', 'w') { |f| f.write(httpd_layout) };
+    File.open("config.layout", "w") { |f| f.write(httpd_layout) }
 
     args = %W[
       --enable-layout=Homebrew
@@ -49,9 +42,12 @@ class Httpd22 < Formula
       --enable-rewrite
     ]
 
+    args << "--with-apr=#{Formula["apr"].opt_prefix}"
+    args << "--with-apr-util=#{Formula["apr-util"].opt_prefix}"
+    args << "--with-z=#{Formula['zlib'].opt_prefix}"
+
     if build.with? "brewed-openssl"
-      openssl = Formula["openssl"].opt_prefix
-      args << "--with-ssl=#{openssl}"
+      args << "--with-ssl=#{Formula['openssl'].opt_prefix}"
     else
       args << "--with-ssl=/usr"
     end
@@ -64,26 +60,13 @@ class Httpd22 < Formula
       args << "--with-sslport=8443"
     end
 
-    if build.with? "brewed-apr"
-      args << "--with-apr=#{Formula["apr"].opt_prefix}"
-      args << "--with-apr-util=#{Formula["apr-util"].opt_prefix}"
-    else
-      args << "--with-included-apr"
-    end
-
-    args << "--with-pcre=#{Formula['pcre'].opt_prefix}" if build.with? "pcre"
-
-    if build.with? "brewed-zlib"
-      args << "--with-z=#{Formula['zlib'].opt_prefix}"
-    else
-      args << "--with-z=#{MacOS.sdk_path}/usr"
-    end
-
     if build.with? "ldap"
       args << "--with-ldap"
       args << "--enable-ldap"
       args << "--enable-authnz-ldap"
     end
+
+    args << "--with-pcre=#{Formula['pcre'].opt_prefix}" if build.with? "pcre"
 
     system "./configure", *args
 

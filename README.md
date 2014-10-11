@@ -1,8 +1,6 @@
 Homebrew-apache
 ===============
 
-[![Build Status](https://travis-ci.org/Homebrew/homebrew-apache.svg?branch=master)](https://travis-ci.org/Homebrew/homebrew-apache)
-
 How do I install these formulae?
 --------------------------------
 Just `brew tap homebrew/apache` and then `brew install <formula>`.

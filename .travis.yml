@@ -39,7 +39,5 @@ env:
   - PACKAGE="mod_wsgi"
   - PACKAGE="mod_wsgi --with-brewed-httpd22"
   - PACKAGE="mod_wsgi --with-brewed-httpd24"
-  - PACKAGE="mod_wsgi --with-brewed-httpd22 --with-brewed-python"
-  - PACKAGE="mod_wsgi --with-brewed-httpd24 --with-brewed-python"
 script:
   - brew install -v $PACKAGE

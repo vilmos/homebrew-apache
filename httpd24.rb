@@ -108,7 +108,7 @@ class Httpd24 < Formula
           mandir:        #{man}
           sysconfdir:    #{etc}/apache2/2.4
           datadir:       #{var}/www
-          installbuilddir: ${datadir}/build
+          installbuilddir: ${prefix}/build
           errordir:      ${datadir}/error
           iconsdir:      ${datadir}/icons
           htdocsdir:     ${datadir}/htdocs

@@ -5,6 +5,11 @@ class ModSecurity < Formula
   url "https://www.modsecurity.org/tarball/2.8.0/modsecurity-2.8.0.tar.gz"
   sha1 "0ac3931806468eef616ee2301c98b3dd1f567f7c"
 
+  bottle do
+    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "88dbf9dbe420792cb0dbde09867b3e656879907a" => :lion
+  end
+
   option "with-brewed-apr", "Use Homebrew apr"
   option "with-brewed-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-brewed-httpd24", "Use Homebrew Apache httpd 2.4"

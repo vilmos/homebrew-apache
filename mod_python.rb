@@ -5,6 +5,12 @@ class ModPython < Formula
   url "http://dist.modpython.org/dist/mod_python-3.5.0.tgz"
   sha1 "9208bb813172ab51d601d78e439ea552f676d2d1"
 
+  bottle do
+    cellar :any
+    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "12bb474e8bff36f114f8080f31dde38064cd8a8d" => :lion
+  end
+
   option "with-brewed-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-brewed-httpd24", "Use Homebrew Apache httpd 2.4"
   option "with-brewed-python", "Use Homebrew python"

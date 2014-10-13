@@ -5,6 +5,11 @@ class Apr < Formula
   url "https://archive.apache.org/dist/apr/apr-1.5.1.tar.bz2"
   sha1 "f94e4e0b678282e0704e573b5b2fe6d48bd1c309"
 
+  bottle do
+    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "2e221228f0a4deb80aab2248290b6f54070d7210" => :lion
+  end
+
   keg_only :provided_by_osx
 
   # Configure switch unconditionally adds the -no-cpp-precomp switch

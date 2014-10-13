@@ -5,6 +5,11 @@ class AprUtil < Formula
   url "https://archive.apache.org/dist/apr/apr-util-1.5.4.tar.bz2"
   sha1 "b00038b5081472ed094ced28bcbf2b5bb56c589d"
 
+  bottle do
+    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "06fb57fdefd47e778c9a05344c1d83f52898cf32" => :lion
+  end
+
   keg_only :provided_by_osx
 
   depends_on "apr"

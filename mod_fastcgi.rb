@@ -5,6 +5,12 @@ class ModFastcgi < Formula
   homepage "http://www.fastcgi.com/"
   sha1 "69c56548bf97040a61903b32679fe3e3b7d3c2d4"
 
+  bottle do
+    cellar :any
+    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "44fa0418a50e540ca1478d5ca4df074c2370ac14" => :lion
+  end
+
   option "with-brewed-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-brewed-httpd24", "Use Homebrew Apache httpd 2.4"
 

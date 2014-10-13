@@ -7,6 +7,12 @@ class ModFcgid < Formula
 
   head "http://svn.apache.org/repos/asf/httpd/mod_fcgid/trunk"
 
+  bottle do
+    cellar :any
+    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "630b0389c5fbf0c9cae3625cc5bed1d886165f8a" => :lion
+  end
+
   option "with-brewed-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-brewed-httpd24", "Use Homebrew Apache httpd 2.4"
 

@@ -6,6 +6,12 @@ class ModBonjour < Formula
   sha1 "597ad957a6524ba05e03e2679fe622abdb2662f8"
   version "2.3"
 
+  bottle do
+    cellar :any
+    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "ada5772e8488af327327a7bbe9407259a716e912" => :lion
+  end
+
   option "with-brewed-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-brewed-httpd24", "Use Homebrew Apache httpd 2.4"
 

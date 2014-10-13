@@ -7,6 +7,12 @@ class ModWsgi < Formula
 
   head "https://github.com/GrahamDumpleton/mod_wsgi.git"
 
+  bottle do
+    cellar :any
+    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "1fab633b53a1840289e518c1e2fbeb5f523b042f" => :lion
+  end
+
   option "with-brewed-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-brewed-httpd24", "Use Homebrew Apache httpd 2.4"
   option "with-brewed-python", "Use Homebrew python"

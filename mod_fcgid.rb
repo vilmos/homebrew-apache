@@ -13,6 +13,7 @@ class ModFcgid < Formula
     sha1 "b1f06bce389c24e965e291283c0635fd404bb434" => :snow_leopard
     sha1 "630b0389c5fbf0c9cae3625cc5bed1d886165f8a" => :lion
     sha1 "ac93fd97bb376288efece0844c781fdd1c15a99d" => :mountain_lion
+    sha1 "4e8895a6c9ac788d9bea451fbf113be643f62449" => :mavericks
     sha1 "9a09bf6f7013cbb02e11bb00c162946945477b51" => :yosemite
   end
 

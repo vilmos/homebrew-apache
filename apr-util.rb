@@ -10,6 +10,7 @@ class AprUtil < Formula
     sha1 "2890f5b487951f68c42a0d240f126669dc9d4374" => :snow_leopard
     sha1 "06fb57fdefd47e778c9a05344c1d83f52898cf32" => :lion
     sha1 "0bad5cccdc7f33a541a0df5a2da14e0accc230b6" => :mountain_lion
+    sha1 "12f13585ee31541e2104330d956a698793e6a4f2" => :mavericks
     sha1 "1d16b201833d6e9e62724b73a457865f070872a1" => :yosemite
   end
 

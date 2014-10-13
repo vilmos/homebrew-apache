@@ -9,6 +9,7 @@ class AprUtil < Formula
     root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
     sha1 "2890f5b487951f68c42a0d240f126669dc9d4374" => :snow_leopard
     sha1 "06fb57fdefd47e778c9a05344c1d83f52898cf32" => :lion
+    sha1 "0bad5cccdc7f33a541a0df5a2da14e0accc230b6" => :mountain_lion
   end
 
   keg_only :provided_by_osx

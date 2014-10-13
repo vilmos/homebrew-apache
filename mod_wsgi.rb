@@ -12,6 +12,7 @@ class ModWsgi < Formula
     root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
     sha1 "0ac0906c38c857d878a4206159ad6769dc40fb73" => :snow_leopard
     sha1 "1fab633b53a1840289e518c1e2fbeb5f523b042f" => :lion
+    sha1 "f4c38b9890e1b0e91e027e49e6a9e7f54577d499" => :mountain_lion
   end
 
   option "with-brewed-httpd22", "Use Homebrew Apache httpd 2.2"

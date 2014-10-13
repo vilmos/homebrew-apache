@@ -10,6 +10,7 @@ class Ab < Formula
     root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
     sha1 "24995d9281dd40dac28dd2e64d3ed50e3364e86e" => :snow_leopard
     sha1 "6f7abdb25b37c1db8a216f0b33732da935a06f4c" => :lion
+    sha1 "a6f96b9917ae3b289b886c6813d2c59cd890dc91" => :mountain_lion
   end
 
   keg_only :provided_by_osx

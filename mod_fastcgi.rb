@@ -10,6 +10,7 @@ class ModFastcgi < Formula
     root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
     sha1 "a811075107ca5337d0553cd57d2e780d5238f7b2" => :snow_leopard
     sha1 "44fa0418a50e540ca1478d5ca4df074c2370ac14" => :lion
+    sha1 "d8d243e599192134fdfa1ba09b5a31721decfd37" => :mountain_lion
   end
 
   option "with-brewed-httpd22", "Use Homebrew Apache httpd 2.2"

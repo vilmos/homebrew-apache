@@ -11,6 +11,7 @@ class ModBonjour < Formula
     root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
     sha1 "a0fe73aedb8473dfdcf17125e5983083dc2ffbfb" => :snow_leopard
     sha1 "ada5772e8488af327327a7bbe9407259a716e912" => :lion
+    sha1 "733f925a80cf829b421d1d636cfed00b87f593c8" => :mountain_lion
   end
 
   option "with-brewed-httpd22", "Use Homebrew Apache httpd 2.2"

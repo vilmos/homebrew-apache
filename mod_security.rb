@@ -10,6 +10,7 @@ class ModSecurity < Formula
     sha1 "6182a4fd50f1d1b4f250f6e9ba78255364efa846" => :snow_leopard
     sha1 "88dbf9dbe420792cb0dbde09867b3e656879907a" => :lion
     sha1 "bb491077b813d5fe2d6703b3c97d42dfbff20785" => :mountain_lion
+    sha1 "a2cb16d784978092be059f65f4e1d14c09c71009" => :yosemite
   end
 
   option "with-brewed-apr", "Use Homebrew apr"

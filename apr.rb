@@ -10,6 +10,7 @@ class Apr < Formula
     sha1 "259fcfc9649870d98684a8eb562f2c4eeab3bfb7" => :snow_leopard
     sha1 "2e221228f0a4deb80aab2248290b6f54070d7210" => :lion
     sha1 "15ec64fd80b16cd2ee40c4038cceab5d90d1132e" => :mountain_lion
+    sha1 "6e2ccbbbcf3b50a6360c574efc4f4c3fb70b330e" => :yosemite
   end
 
   keg_only :provided_by_osx

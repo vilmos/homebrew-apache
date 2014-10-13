@@ -7,6 +7,7 @@ class Apr < Formula
 
   bottle do
     root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "259fcfc9649870d98684a8eb562f2c4eeab3bfb7" => :snow_leopard
     sha1 "2e221228f0a4deb80aab2248290b6f54070d7210" => :lion
   end
 

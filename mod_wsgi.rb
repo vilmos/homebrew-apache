@@ -10,6 +10,7 @@ class ModWsgi < Formula
   bottle do
     cellar :any
     root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "0ac0906c38c857d878a4206159ad6769dc40fb73" => :snow_leopard
     sha1 "1fab633b53a1840289e518c1e2fbeb5f523b042f" => :lion
   end
 

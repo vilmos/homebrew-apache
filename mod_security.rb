@@ -7,6 +7,7 @@ class ModSecurity < Formula
 
   bottle do
     root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "6182a4fd50f1d1b4f250f6e9ba78255364efa846" => :snow_leopard
     sha1 "88dbf9dbe420792cb0dbde09867b3e656879907a" => :lion
   end
 

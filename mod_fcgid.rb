@@ -10,6 +10,7 @@ class ModFcgid < Formula
   bottle do
     cellar :any
     root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "b1f06bce389c24e965e291283c0635fd404bb434" => :snow_leopard
     sha1 "630b0389c5fbf0c9cae3625cc5bed1d886165f8a" => :lion
   end
 

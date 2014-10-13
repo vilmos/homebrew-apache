@@ -9,6 +9,7 @@ class ModBonjour < Formula
   bottle do
     cellar :any
     root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "a0fe73aedb8473dfdcf17125e5983083dc2ffbfb" => :snow_leopard
     sha1 "ada5772e8488af327327a7bbe9407259a716e912" => :lion
   end
 

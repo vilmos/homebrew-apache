@@ -8,6 +8,7 @@ class Ab < Formula
   bottle do
     cellar :any
     root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "24995d9281dd40dac28dd2e64d3ed50e3364e86e" => :snow_leopard
     sha1 "6f7abdb25b37c1db8a216f0b33732da935a06f4c" => :lion
   end
 

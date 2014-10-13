@@ -8,6 +8,7 @@ class ModFastcgi < Formula
   bottle do
     cellar :any
     root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
+    sha1 "a811075107ca5337d0553cd57d2e780d5238f7b2" => :snow_leopard
     sha1 "44fa0418a50e540ca1478d5ca4df074c2370ac14" => :lion
   end
 

@@ -61,9 +61,10 @@ class ModFastcgi < Formula
     end
   end
 
-  def patches
-    if build.with? "brewed-httpd24"
-      "https://raw.githubusercontent.com/ByteInternet/libapache-mod-fastcgi/byte/debian/patches/byte-compile-against-apache24.diff"
+  if (MacOS.version == :yosemite or build.with? "brewed-httpd24")
+    patch do
+      url "https://raw.githubusercontent.com/ByteInternet/libapache-mod-fastcgi/byte/debian/patches/byte-compile-against-apache24.diff"
+      sha1 "1000fac5bf814d716641bbd1528de34449049a73"
     end
   end
 

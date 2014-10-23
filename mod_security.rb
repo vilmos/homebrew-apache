@@ -35,10 +35,10 @@ class ModSecurity < Formula
     exit 1
   end
 
-  if (! (build.with? "brewed-httpd22" or build.with? "brewed-httpd24" or build.with? "brewed-apr")) and MacOS.version == :mavericks
+  if (! (build.with? "brewed-httpd22" or build.with? "brewed-httpd24")) and (MacOS.version == :yosemite or MacOS.version == :mavericks)
     unless system("pkgutil --pkgs | grep -qx com.apple.pkg.CLTools_Executables")
-      onoe "Command Line Tools required, even if Xcode is installed, on 10.9 Mavericks and not
-       using Homebrew httpd22, httpd24, or apr. Resolve by running `xcode-select --install`."
+      onoe "Command Line Tools required, even if Xcode is installed, on OS X 10.9 or 10.10 and not
+       using Homebrew httpd22 or httpd24. Resolve by running `xcode-select --install`."
       exit 1
     end
   end

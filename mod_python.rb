@@ -12,7 +12,7 @@ class ModPython < Formula
     sha1 "12bb474e8bff36f114f8080f31dde38064cd8a8d" => :lion
     sha1 "d4e908e9592e95aa55e1fcf2c7ea48ed4a2b3139" => :mountain_lion
     sha1 "2a013d1ef8cfb2ddf23f8ea48eb15a355fab83c4" => :mavericks
-    sha1 "944ce9980e9d321282f96155ff1206eea92e15d4" => :yosemite
+    sha1 "0316f2ab4c1606e835ec4063949bcdbf7904e7a0" => :yosemite
   end
 
   option "with-brewed-httpd22", "Use Homebrew Apache httpd 2.2"

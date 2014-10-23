@@ -14,7 +14,7 @@ class ModWsgi < Formula
     sha1 "1fab633b53a1840289e518c1e2fbeb5f523b042f" => :lion
     sha1 "f4c38b9890e1b0e91e027e49e6a9e7f54577d499" => :mountain_lion
     sha1 "ef89f27ae5a637d42329bbd8deeeaf2c59939f2f" => :mavericks
-    sha1 "ef3493d6b4d58a1f4d633a92f55a7a4c1683fdb7" => :yosemite
+    sha1 "9fc46cef36a90e50c3aafc2e2e516eba8d951703" => :yosemite
   end
 
   option "with-brewed-httpd22", "Use Homebrew Apache httpd 2.2"

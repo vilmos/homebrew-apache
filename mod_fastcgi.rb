@@ -12,6 +12,7 @@ class ModFastcgi < Formula
     sha1 "44fa0418a50e540ca1478d5ca4df074c2370ac14" => :lion
     sha1 "d8d243e599192134fdfa1ba09b5a31721decfd37" => :mountain_lion
     sha1 "e87c8b9e193fedd0ba67a1bedab14133267e728f" => :mavericks
+    sha1 "1720f7b434e745b8127d99a906eace447b8b9ea0" => :yosemite
   end
 
   option "with-brewed-httpd22", "Use Homebrew Apache httpd 2.2"

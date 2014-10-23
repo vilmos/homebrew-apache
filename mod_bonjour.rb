@@ -13,7 +13,7 @@ class ModBonjour < Formula
     sha1 "ada5772e8488af327327a7bbe9407259a716e912" => :lion
     sha1 "733f925a80cf829b421d1d636cfed00b87f593c8" => :mountain_lion
     sha1 "a15d59611080e35ce1808bb88bd01a344db69aee" => :mavericks
-    sha1 "f145c631ecf15d91126d914b493a131b255670bc" => :yosemite
+    sha1 "3269aeccb44d4ca56588d618cece3a475693c6b7" => :yosemite
   end
 
   option "with-brewed-httpd22", "Use Homebrew Apache httpd 2.2"

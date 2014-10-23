@@ -10,12 +10,19 @@ class Httpd24 < Formula
   skip_clean :la
 
   option "with-brewed-openssl", "Use Homebrew's SSL instead of the system version"
+  option "with-mpm-worker", "Use the Worker Multi-Processing Module instead of Prefork"
+  option "with-mpm-event", "Use the Event Multi-Processing Module instead of Prefork"
   option "with-privileged-ports", "Use the default ports 80 and 443 (which require root privileges), instead of 8080 and 8443"
 
   depends_on "apr-util"
   depends_on "openssl" if build.with? "brewed-openssl"
   depends_on "pcre"
   depends_on "homebrew/dupes/zlib"
+
+  if build.with? "mpm-worker" and build.with? "mpm-event"
+    onoe "Cannot build with both worker and event MPMs, choose one"
+    exit 1
+  end
 
   def install
     # point config files to opt_prefix instead of the version-specific prefix
@@ -28,7 +35,6 @@ class Httpd24 < Formula
     args = %W[
       --enable-layout=Homebrew
       --enable-mods-shared=all
-      --with-mpm=prefork
       --enable-unique-id
       --enable-ssl
       --enable-dav
@@ -50,6 +56,14 @@ class Httpd24 < Formula
       args << "--with-ssl=#{Formula['openssl'].opt_prefix}"
     else
       args << "--with-ssl=/usr"
+    end
+
+    if build.with? "mpm-worker"
+      args << "--with-mpm=worker"
+    elsif build.with? "mpm-event"
+      args << "--with-mpm=event"
+    else
+      args << "--with-mpm=prefork"
     end
 
     if build.with? "privileged-ports"

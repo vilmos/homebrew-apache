@@ -4,7 +4,6 @@ class ModBonjour < Formula
   homepage "http://www.opensource.apple.com/source/apache_mod_bonjour/apache_mod_bonjour-23/"
   url "http://www.opensource.apple.com/tarballs/apache_mod_bonjour/apache_mod_bonjour-23.tar.gz"
   sha1 "597ad957a6524ba05e03e2679fe622abdb2662f8"
-  version "2.3"
 
   bottle do
     cellar :any
@@ -27,7 +26,7 @@ class ModBonjour < Formula
     exit 1
   end
 
-  if (! (build.with? "brewed-httpd22" or build.with? "brewed-httpd24")) and (MacOS.version == :yosemite or MacOS.version == :mavericks)
+  if (! (build.with? "brewed-httpd22" or build.with? "brewed-httpd24")) and (MacOS.version >= :mavericks)
     unless system("pkgutil --pkgs | grep -qx com.apple.pkg.CLTools_Executables")
       onoe "Command Line Tools required, even if Xcode is installed, on OS X 10.9 or 10.10 and not
        using Homebrew httpd22 or httpd24. Resolve by running `xcode-select --install`."

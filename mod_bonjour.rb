@@ -4,6 +4,7 @@ class ModBonjour < Formula
   homepage "http://www.opensource.apple.com/source/apache_mod_bonjour/apache_mod_bonjour-23/"
   url "http://www.opensource.apple.com/tarballs/apache_mod_bonjour/apache_mod_bonjour-23.tar.gz"
   sha1 "597ad957a6524ba05e03e2679fe622abdb2662f8"
+  version "2.3"
 
   bottle do
     cellar :any

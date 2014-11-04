@@ -39,7 +39,7 @@ $ which apr-1-config
 /usr/bin/apr-1-config
 ```
 
-The simplest solution is to go to the */Applications/Xcode.app/Contents/Developer/Toolchains/* directory and create a symlink named *OSX10.8.xctoolchain*, *OSX10.9.xctoolchain*, or *OSX10.10.xctoolchain* to *XcodeDefault.xctoolchain*. This requires you to have Xcode installed. If you only have the [Xcode Command Line tools](https://developer.apple.com/downloads/) or [OSX-GCC-Installer](http://kennethreitz.com/xcode-gcc-and-homebrew.html), a simple symlink will not work.
+The simplest solution is to go to the */Applications/Xcode.app/Contents/Developer/Toolchains/* directory and create a symlink named *OSX10.8.xctoolchain*, *OSX10.9.xctoolchain*, or *OSX10.10.xctoolchain* to *XcodeDefault.xctoolchain*. This requires you to have Xcode installed. If you only have the [Xcode Command Line tools](https://developer.apple.com/downloads/) or [OSX-GCC-Installer](https://github.com/kennethreitz/osx-gcc-installer), a simple symlink will not work.
 
 This single-line command will set up the symlink if you have Xcode installed, and if you don't, it will create directories leading up to the toolchain and a symlink to /usr/bin that will satisfy the requirements needed for `apr-1-config` to find the compiler it needs:
 

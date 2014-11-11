@@ -110,7 +110,7 @@ class ModSecurity < Formula
       #{prefix}/modsecurity.conf-recommended
 
     NOTE: If you're _NOT_ using --with-brewed-httpd22 or --with-brewed-httpd24 and having
-    installation problems relating to a missing `cc` compiler and `OSX#{MACOS_VERSION}.xctoolchain`,
+    installation problems relating to a missing `cc` compiler and `OSX#{MacOS.version}.xctoolchain`,
     read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS
   end

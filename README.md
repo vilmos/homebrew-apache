@@ -19,6 +19,11 @@ Docs
 
 [wiki]:http://wiki.github.com/mxcl/homebrew
 
+Configuration
+-------------
+
+After installing `httpd22` or `httpd24`, the configuration files will be in `$(brew --prefix)/etc/apache2/2.2` and `$(brew --prefix)/etc/apache2/2.4`, respectively.
+
 Troubleshooting
 ---------------
 

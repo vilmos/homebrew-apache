@@ -2,6 +2,10 @@ require "formula"
 
 class ModSuexec < Formula
   homepage "http://httpd.apache.org/docs/current/suexec.html"
+  url "http://archive.apache.org/dist/httpd/httpd-2.2.24.tar.bz2" if MacOS.version == :snow_leopard
+  sha1 "f73bce14832ec40c1aae68f4f8c367cab2266241" if MacOS.version == :snow_leopard
+  url "http://archive.apache.org/dist/httpd/httpd-2.2.26.tar.bz2" if MacOS.version == :lion
+  sha1 "ecfa7dab239ef177668ad1d5cf9d03c4602607b8" if MacOS.version == :lion
   url "http://archive.apache.org/dist/httpd/httpd-2.2.22.tar.bz2" if MacOS.version == :mountain_lion
   sha1 "766cd0843050a8dfb781e48b976f3ba6ebcf8696" if MacOS.version == :mountain_lion
   url "http://archive.apache.org/dist/httpd/httpd-2.2.26.tar.bz2" if MacOS.version == :mavericks
@@ -20,7 +24,7 @@ class ModSuexec < Formula
 
   def install
     system "./configure",
-      "LTFLAGS=--tag=cc",
+      "LDFLAGS=--tag=cc",
       "--enable-suexec=shared",
       "--with-suexec-bin=/usr/bin/suexec",
       "--with-suexec-caller=_www",
@@ -31,7 +35,7 @@ class ModSuexec < Formula
       "--with-suexec-logfile=suexec_log",
       "--with-suexec-safepath=/usr/local/bin:/usr/bin:/bin"
 
-    args = "CC=#{ENV.cc}" if MacOS.version >= :mountain_lion
+    args = "CC=#{ENV.cc}" if MacOS.version >= :lion
     system "make", *args
 
     libexec.install "modules/generators/.libs/mod_suexec.so"

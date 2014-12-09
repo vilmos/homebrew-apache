@@ -1,6 +1,18 @@
 require "formula"
 
 class ModPython < Formula
+  class CLTRequirement < Requirement
+    fatal true
+    satisfy { MacOS.version < :mavericks || MacOS::CLT.installed? }
+
+    def message; <<-EOS.undent
+      Command Line Tools required, even if Xcode is installed, on OS X 10.9 or
+      10.10 and not using Homebrew httpd22 or httpd24. Resolve by running
+        xcode-select --install
+      EOS
+    end
+  end
+
   homepage "http://modpython.org/"
   url "http://dist.modpython.org/dist/mod_python-3.5.0.tgz"
   sha1 "9208bb813172ab51d601d78e439ea552f676d2d1"
@@ -22,18 +34,11 @@ class ModPython < Formula
   depends_on "httpd22" if build.with? "brewed-httpd22"
   depends_on "httpd24" if build.with? "brewed-httpd24"
   depends_on "python" if build.with? "brewed-python"
+  depends_on CLTRequirement if build.without? "brewed-httpd22" and build.without? "brewed-httpd24"
 
   if build.with? "brewed-httpd22" and build.with? "brewed-httpd24"
     onoe "Cannot build for http22 and httpd24 at the same time"
     exit 1
-  end
-
-  if (! (build.with? "brewed-httpd22" or build.with? "brewed-httpd24")) and (MacOS.version >= :mavericks)
-    unless system("pkgutil --pkgs | grep -qx com.apple.pkg.CLTools_Executables")
-      onoe "Command Line Tools required, even if Xcode is installed, on OS X 10.9 or 10.10 and not
-       using Homebrew httpd22 or httpd24. Resolve by running `xcode-select --install`."
-      exit 1
-    end
   end
 
   def apache_apxs

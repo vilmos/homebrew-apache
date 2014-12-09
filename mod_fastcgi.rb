@@ -1,6 +1,18 @@
 require "formula"
 
 class ModFastcgi < Formula
+  class CLTRequirement < Requirement
+    fatal true
+    satisfy { MacOS.version < :mavericks || MacOS::CLT.installed? }
+
+    def message; <<-EOS.undent
+      Command Line Tools required, even if Xcode is installed, on OS X 10.9 or
+      10.10 and not using Homebrew httpd22 or httpd24. Resolve by running
+        xcode-select --install
+      EOS
+    end
+  end
+
   url "http://www.fastcgi.com/dist/mod_fastcgi-2.4.6.tar.gz"
   homepage "http://www.fastcgi.com/"
   sha1 "69c56548bf97040a61903b32679fe3e3b7d3c2d4"
@@ -20,18 +32,11 @@ class ModFastcgi < Formula
 
   depends_on "httpd22" if build.with? "brewed-httpd22"
   depends_on "httpd24" if build.with? "brewed-httpd24"
+  depends_on CLTRequirement if build.without? "brewed-httpd22" and build.without? "brewed-httpd24"
 
   if build.with? "brewed-httpd22" and build.with? "brewed-httpd24"
     onoe "Cannot build for http22 and httpd24 at the same time"
     exit 1
-  end
-
-  if (! (build.with? "brewed-httpd22" or build.with? "brewed-httpd24")) and (MacOS.version >= :mavericks)
-    unless system("pkgutil --pkgs | grep -qx com.apple.pkg.CLTools_Executables")
-      onoe "Command Line Tools required, even if Xcode is installed, on OS X 10.9 or 10.10 and not
-       using Homebrew httpd22 or httpd24. Resolve by running `xcode-select --install`."
-      exit 1
-    end
   end
 
   def apache_apxs

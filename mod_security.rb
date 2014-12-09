@@ -1,6 +1,18 @@
 require "formula"
 
 class ModSecurity < Formula
+  class CLTRequirement < Requirement
+    fatal true
+    satisfy { MacOS.version < :mavericks || MacOS::CLT.installed? }
+
+    def message; <<-EOS.undent
+      Command Line Tools required, even if Xcode is installed, on OS X 10.9 or
+      10.10 and not using Homebrew httpd22 or httpd24. Resolve by running
+        xcode-select --install
+      EOS
+    end
+  end
+
   homepage "http://www.modsecurity.org/"
   url "https://www.modsecurity.org/tarball/2.8.0/modsecurity-2.8.0.tar.gz"
   sha1 "0ac3931806468eef616ee2301c98b3dd1f567f7c"
@@ -25,6 +37,7 @@ class ModSecurity < Formula
   depends_on "httpd24" if build.with? "brewed-httpd24"
   depends_on "libtool" => :build
   depends_on "pcre"
+  depends_on CLTRequirement if build.without? "brewed-httpd22" and build.without? "brewed-httpd24"
 
   if build.with? "brewed-apr" and (build.with? "brewed-httpd22" or build.with? "brewed-httpd24")
     opoo "Ignoring --with-brewed-apr: homebrew apr included in httpd22 and httpd24"
@@ -33,14 +46,6 @@ class ModSecurity < Formula
   if build.with? "brewed-httpd22" and build.with? "brewed-httpd24"
     onoe "Cannot build for http22 and httpd24 at the same time"
     exit 1
-  end
-
-  if (! (build.with? "brewed-httpd22" or build.with? "brewed-httpd24")) and (MacOS.version >= :mavericks)
-    unless system("pkgutil --pkgs | grep -qx com.apple.pkg.CLTools_Executables")
-      onoe "Command Line Tools required, even if Xcode is installed, on OS X 10.9 or 10.10 and not
-       using Homebrew httpd22 or httpd24. Resolve by running `xcode-select --install`."
-      exit 1
-    end
   end
 
   def apache_apxs

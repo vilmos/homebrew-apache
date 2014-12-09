@@ -35,11 +35,6 @@ class ModBonjour < Formula
   depends_on "httpd24" if build.with? "brewed-httpd24"
   depends_on CLTRequirement if build.without? "brewed-httpd22" and build.without? "brewed-httpd24"
 
-  if build.with? "brewed-httpd22" and build.with? "brewed-httpd24"
-    onoe "Cannot build for http22 and httpd24 at the same time"
-    exit 1
-  end
-
   def apache_apxs
     if build.with? "brewed-httpd22"
       %W[sbin bin].each do |dir|
@@ -69,6 +64,11 @@ class ModBonjour < Formula
   end
 
   def install
+    if build.with? "brewed-httpd22" and build.with? "brewed-httpd24"
+      onoe "Cannot build for http22 and httpd24 at the same time"
+      exit 1
+    end
+
     system "#{apache_apxs} -o mod_bonjour.so -c *.c"
     libexec.install ".libs/mod_bonjour.so"
   end

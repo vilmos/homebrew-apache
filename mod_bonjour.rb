@@ -1,6 +1,18 @@
 require "formula"
 
 class ModBonjour < Formula
+  class CLTRequirement < Requirement
+    fatal true
+    satisfy { MacOS.version < :mavericks || MacOS::CLT.installed? }
+
+    def message; <<-EOS.undent
+      Command Line Tools required, even if Xcode is installed, on OS X 10.9 or
+      10.10 and not using Homebrew httpd22 or httpd24. Resolve by running
+        xcode-select --install
+      EOS
+    end
+  end
+
   homepage "http://www.opensource.apple.com/source/apache_mod_bonjour/apache_mod_bonjour-23/"
   url "http://www.opensource.apple.com/tarballs/apache_mod_bonjour/apache_mod_bonjour-23.tar.gz"
   sha1 "597ad957a6524ba05e03e2679fe622abdb2662f8"
@@ -21,18 +33,11 @@ class ModBonjour < Formula
 
   depends_on "httpd22" if build.with? "brewed-httpd22"
   depends_on "httpd24" if build.with? "brewed-httpd24"
+  depends_on CLTRequirement if build.without? "brewed-httpd22" and build.without? "brewed-httpd24"
 
   if build.with? "brewed-httpd22" and build.with? "brewed-httpd24"
     onoe "Cannot build for http22 and httpd24 at the same time"
     exit 1
-  end
-
-  if (! (build.with? "brewed-httpd22" or build.with? "brewed-httpd24")) and (MacOS.version >= :mavericks)
-    unless system("pkgutil --pkgs | grep -qx com.apple.pkg.CLTools_Executables")
-      onoe "Command Line Tools required, even if Xcode is installed, on OS X 10.9 or 10.10 and not
-       using Homebrew httpd22 or httpd24. Resolve by running `xcode-select --install`."
-      exit 1
-    end
   end
 
   def apache_apxs

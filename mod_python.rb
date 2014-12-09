@@ -38,13 +38,13 @@ class ModPython < Formula
 
   def apache_apxs
     if build.with? "brewed-httpd22"
-      %W[sbin, bin].each do |dir|
+      %W[sbin bin].each do |dir|
         if File.exist?(location = "#{Formula['httpd22'].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
     elsif build.with? "brewed-httpd24"
-      %W[sbin, bin].each do |dir|
+      %W[sbin bin].each do |dir|
         if File.exist?(location = "#{Formula['httpd24'].opt_prefix}/#{dir}/apxs")
           return location
         end

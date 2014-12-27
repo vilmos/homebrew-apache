@@ -1,32 +1,22 @@
-Homebrew-apache
-===============
+# Homebrew Apache
+## How do I install these formulae?
+`brew install homebrew/apache/<formula>`
 
-How do I install these formulae?
---------------------------------
-Just `brew tap homebrew/apache` and then `brew install <formula>`.
+Or `brew tap homebrew/apache` and then `brew install <formula>`.
 
-If the formula conflicts with one from mxcl/master or another tap, you can `brew install homebrew/apache/<formula>`.
-
-You can also install via URL:
+Or install via URL (which will not receive updates):
 
 ```
 brew install https://raw.githubusercontent.com/Homebrew/homebrew-apache/master/<formula>.rb
 ```
 
-Docs
-----
-`brew help`, `man brew`, or the Homebrew [wiki][].
+## Documentation
+`brew help`, `man brew` or check [Homebrew's documentation](https://github.com/Homebrew/homebrew/tree/master/share/doc/homebrew#readme).
 
-[wiki]:http://wiki.github.com/mxcl/homebrew
-
-Configuration
--------------
-
+## Configuration
 After installing `httpd22` or `httpd24`, the configuration files will be in `$(brew --prefix)/etc/apache2/2.2` and `$(brew --prefix)/etc/apache2/2.4`, respectively.
 
-Troubleshooting
----------------
-
+## Troubleshooting
 A common problem with OS X 10.8 Mountain Lion and higher is an error about a missing *OSX10.8.xctoolchain*, *OSX10.9.xctoolchain*, or *OSX10.10.xctoolchain* directory:
 
 ```

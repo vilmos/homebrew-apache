@@ -23,6 +23,9 @@ class ModFcgid < Formula
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"
 
+  deprecated_option "with-brewed-httpd22" => "with-homebrew-httpd22"
+  deprecated_option "with-brewed-httpd24" => "with-homebrew-httpd24"
+
   depends_on "httpd22" if build.with? "homebrew-httpd22"
   depends_on "httpd24" if build.with? "homebrew-httpd24"
   depends_on CLTRequirement if build.without? "homebrew-httpd22" and build.without? "homebrew-httpd24"

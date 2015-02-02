@@ -15,6 +15,8 @@ class Httpd24 < Formula
   option "with-mpm-event", "Use the Event Multi-Processing Module instead of Prefork"
   option "with-privileged-ports", "Use the default ports 80 and 443 (which require root privileges), instead of 8080 and 8443"
 
+  deprecated_option "with-brewed-openssl" => "with-homebrew-openssl"
+
   depends_on "apr-util"
   depends_on "openssl" if build.with? "homebrew-openssl"
   depends_on "pcre"

@@ -22,6 +22,10 @@ class ModSecurity < Formula
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"
 
+  deprecated_option "with-brewed-apr" => "with-homebrew-apr"
+  deprecated_option "with-brewed-httpd22" => "with-homebrew-httpd22"
+  deprecated_option "with-brewed-httpd24" => "with-homebrew-httpd24"
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "apr-util" if build.with? "homebrew-apr"

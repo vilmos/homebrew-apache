@@ -16,6 +16,7 @@ class ModPython < Formula
   homepage "http://modpython.org/"
   url "http://dist.modpython.org/dist/mod_python-3.5.0.tgz"
   sha1 "9208bb813172ab51d601d78e439ea552f676d2d1"
+  sha256 "0ef09058ed98b41c18d899d8b710a0cce2df2b53c44d877401133b3f28bdca90"
 
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"

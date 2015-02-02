@@ -16,6 +16,7 @@ class ModSecurity < Formula
   homepage "http://www.modsecurity.org/"
   url "https://www.modsecurity.org/tarball/2.8.0/modsecurity-2.8.0.tar.gz"
   sha1 "0ac3931806468eef616ee2301c98b3dd1f567f7c"
+  sha256 "5cbbc7fc993d39106b653213753d25c4ec21771eee17b01b69122ccf3f73460e"
 
   option "with-homebrew-apr", "Use Homebrew apr"
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"

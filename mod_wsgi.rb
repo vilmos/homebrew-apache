@@ -16,6 +16,7 @@ class ModWsgi < Formula
   homepage "http://modwsgi.readthedocs.org/en/latest/"
   url "https://github.com/GrahamDumpleton/mod_wsgi/archive/3.5.tar.gz"
   sha1 "57552287ced75e5fd0b2b00fb186f963f9c4236b"
+  sha256 "f0674c38f0f568ece55610bcc6a775c179835c4cba23aa7f876d2a2a8520bf93"
 
   head "https://github.com/GrahamDumpleton/mod_wsgi.git"
 

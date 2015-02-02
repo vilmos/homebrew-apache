@@ -16,6 +16,7 @@ class ModFastcgi < Formula
   url "http://www.fastcgi.com/dist/mod_fastcgi-2.4.6.tar.gz"
   homepage "http://www.fastcgi.com/"
   sha1 "69c56548bf97040a61903b32679fe3e3b7d3c2d4"
+  sha256 "a5a887eecc8fe13e4cb1cab4d140188a3d2b5e6f337f8a1cce88ca441ddbe689"
 
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"

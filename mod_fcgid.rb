@@ -16,6 +16,7 @@ class ModFcgid < Formula
   homepage "http://httpd.apache.org/mod_fcgid/"
   url "http://archive.apache.org/dist/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.gz"
   sha1 "99d6b24f3f83a3a83d1d93d12a0d5992e3fa7851"
+  sha256 "1cbad345e3376b5d7c8f9a62b471edd7fa892695b90b79502f326b4692a679cf"
 
   head "http://svn.apache.org/repos/asf/httpd/mod_fcgid/trunk"
 

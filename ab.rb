@@ -4,6 +4,7 @@ class Ab < Formula
   homepage "https://httpd.apache.org/docs/trunk/programs/ab.html"
   url "https://archive.apache.org/dist/httpd/httpd-2.4.12.tar.bz2"
   sha1 "bc4681bfd63accec8d82d3cc440fbc8264ce0f17"
+  sha256 "ad6d39edfe4621d8cc9a2791f6f8d6876943a9da41ac8533d77407a2e630eae4"
 
   keg_only :provided_by_osx
 

@@ -16,6 +16,7 @@ class ModBonjour < Formula
   homepage "http://www.opensource.apple.com/source/apache_mod_bonjour/apache_mod_bonjour-23/"
   url "http://www.opensource.apple.com/tarballs/apache_mod_bonjour/apache_mod_bonjour-23.tar.gz"
   sha1 "597ad957a6524ba05e03e2679fe622abdb2662f8"
+  sha256 "189de580be60198dcaf5d9dabc559d95ed2355c12bb55fad2f3f4f8b2b034ef6"
   version "2.3"
 
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"

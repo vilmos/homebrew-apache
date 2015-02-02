@@ -9,13 +9,13 @@ class Httpd24 < Formula
 
   skip_clean :la
 
-  option "with-brewed-openssl", "Use Homebrew's SSL instead of the system version"
+  option "with-homebrew-openssl", "Use Homebrew's SSL instead of the system version"
   option "with-mpm-worker", "Use the Worker Multi-Processing Module instead of Prefork"
   option "with-mpm-event", "Use the Event Multi-Processing Module instead of Prefork"
   option "with-privileged-ports", "Use the default ports 80 and 443 (which require root privileges), instead of 8080 and 8443"
 
   depends_on "apr-util"
-  depends_on "openssl" if build.with? "brewed-openssl"
+  depends_on "openssl" if build.with? "homebrew-openssl"
   depends_on "pcre"
   depends_on "homebrew/dupes/zlib"
 
@@ -52,7 +52,7 @@ class Httpd24 < Formula
     args << "--with-pcre=#{Formula['pcre'].opt_prefix}"
     args << "--with-z=#{Formula['zlib'].opt_prefix}"
 
-    if build.with? "brewed-openssl"
+    if build.with? "homebrew-openssl"
       args << "--with-ssl=#{Formula['openssl'].opt_prefix}"
     else
       args << "--with-ssl=/usr"

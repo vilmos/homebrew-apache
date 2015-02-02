@@ -29,26 +29,26 @@ class ModFcgid < Formula
     sha1 "5cdbd977a60711772bb7decd7b10146ab5b4613f" => :yosemite
   end
 
-  option "with-brewed-httpd22", "Use Homebrew Apache httpd 2.2"
-  option "with-brewed-httpd24", "Use Homebrew Apache httpd 2.4"
+  option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
+  option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"
 
-  depends_on "httpd22" if build.with? "brewed-httpd22"
-  depends_on "httpd24" if build.with? "brewed-httpd24"
-  depends_on CLTRequirement if build.without? "brewed-httpd22" and build.without? "brewed-httpd24"
+  depends_on "httpd22" if build.with? "homebrew-httpd22"
+  depends_on "httpd24" if build.with? "homebrew-httpd24"
+  depends_on CLTRequirement if build.without? "homebrew-httpd22" and build.without? "homebrew-httpd24"
 
-  if build.with? "brewed-httpd22" and build.with? "brewed-httpd24"
+  if build.with? "homebrew-httpd22" and build.with? "homebrew-httpd24"
     onoe "Cannot build for http22 and httpd24 at the same time"
     exit 1
   end
 
   def apache_apxs
-    if build.with? "brewed-httpd22"
+    if build.with? "homebrew-httpd22"
       %W[sbin bin].each do |dir|
         if File.exist?(location = "#{Formula['httpd22'].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
-    elsif build.with? "brewed-httpd24"
+    elsif build.with? "homebrew-httpd24"
       %W[sbin bin].each do |dir|
         if File.exist?(location = "#{Formula['httpd24'].opt_prefix}/#{dir}/apxs")
           return location
@@ -60,9 +60,9 @@ class ModFcgid < Formula
   end
 
   def apache_configdir
-    if build.with? "brewed-httpd22"
+    if build.with? "homebrew-httpd22"
       "#{etc}/apache2/2.2"
-    elsif build.with? "brewed-httpd24"
+    elsif build.with? "homebrew-httpd24"
       "#{etc}/apache2/2.4"
     else
       "/etc/apache2"
@@ -79,7 +79,7 @@ class ModFcgid < Formula
     You must manually edit #{apache_configdir}/httpd.conf to include
       LoadModule fcgid_module #{libexec}/mod_fcgid.so
 
-    NOTE: If you're _NOT_ using --with-brewed-httpd22 or --with-brewed-httpd24 and having
+    NOTE: If you're _NOT_ using --with-homebrew-httpd22 or --with-homebrew-httpd24 and having
     installation problems relating to a missing `cc` compiler and `OSX#{MacOS.version}.xctoolchain`,
     read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS

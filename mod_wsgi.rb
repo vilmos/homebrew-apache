@@ -19,16 +19,6 @@ class ModWsgi < Formula
 
   head "https://github.com/GrahamDumpleton/mod_wsgi.git"
 
-  bottle do
-    cellar :any
-    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
-    sha1 "0ac0906c38c857d878a4206159ad6769dc40fb73" => :snow_leopard
-    sha1 "1fab633b53a1840289e518c1e2fbeb5f523b042f" => :lion
-    sha1 "f4c38b9890e1b0e91e027e49e6a9e7f54577d499" => :mountain_lion
-    sha1 "ef89f27ae5a637d42329bbd8deeeaf2c59939f2f" => :mavericks
-    sha1 "9fc46cef36a90e50c3aafc2e2e516eba8d951703" => :yosemite
-  end
-
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"
   option "with-homebrew-python", "Use Homebrew python"

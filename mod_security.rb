@@ -17,15 +17,6 @@ class ModSecurity < Formula
   url "https://www.modsecurity.org/tarball/2.8.0/modsecurity-2.8.0.tar.gz"
   sha1 "0ac3931806468eef616ee2301c98b3dd1f567f7c"
 
-  bottle do
-    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
-    sha1 "6182a4fd50f1d1b4f250f6e9ba78255364efa846" => :snow_leopard
-    sha1 "88dbf9dbe420792cb0dbde09867b3e656879907a" => :lion
-    sha1 "bb491077b813d5fe2d6703b3c97d42dfbff20785" => :mountain_lion
-    sha1 "abeba9e77f12abb9efaeabe9647197a0f321db03" => :mavericks
-    sha1 "a2cb16d784978092be059f65f4e1d14c09c71009" => :yosemite
-  end
-
   option "with-homebrew-apr", "Use Homebrew apr"
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"

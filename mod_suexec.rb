@@ -13,12 +13,6 @@ class ModSuexec < Formula
   url "http://archive.apache.org/dist/httpd/httpd-2.4.9.tar.bz2" if MacOS.version == :yosemite
   sha1 "646aedbf59519e914c424b3a85d846bf189be3f4" if MacOS.version == :yosemite
 
-  bottle do
-    cellar :any
-    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
-    sha1 "0b5099ab855dce387b876f66d108c935331cbe18" => :yosemite
-  end
-
   depends_on "libtool" => :build
   depends_on "pcre"
 

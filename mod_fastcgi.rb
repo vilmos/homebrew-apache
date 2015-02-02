@@ -17,16 +17,6 @@ class ModFastcgi < Formula
   homepage "http://www.fastcgi.com/"
   sha1 "69c56548bf97040a61903b32679fe3e3b7d3c2d4"
 
-  bottle do
-    cellar :any
-    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
-    sha1 "a811075107ca5337d0553cd57d2e780d5238f7b2" => :snow_leopard
-    sha1 "44fa0418a50e540ca1478d5ca4df074c2370ac14" => :lion
-    sha1 "d8d243e599192134fdfa1ba09b5a31721decfd37" => :mountain_lion
-    sha1 "e87c8b9e193fedd0ba67a1bedab14133267e728f" => :mavericks
-    sha1 "1720f7b434e745b8127d99a906eace447b8b9ea0" => :yosemite
-  end
-
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"
 

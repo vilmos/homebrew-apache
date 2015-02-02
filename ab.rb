@@ -5,16 +5,6 @@ class Ab < Formula
   url "https://archive.apache.org/dist/httpd/httpd-2.4.10.tar.bz2"
   sha1 "00f5c3f8274139bd6160eda2cf514fa9b74549e5"
 
-  bottle do
-    cellar :any
-    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
-    sha1 "24995d9281dd40dac28dd2e64d3ed50e3364e86e" => :snow_leopard
-    sha1 "6f7abdb25b37c1db8a216f0b33732da935a06f4c" => :lion
-    sha1 "a6f96b9917ae3b289b886c6813d2c59cd890dc91" => :mountain_lion
-    sha1 "1304c0810728468ca032e0ecec445f58f56adc33" => :mavericks
-    sha1 "d394d4baf4faaa5165a3653283e902043cae14ea" => :yosemite
-  end
-
   keg_only :provided_by_osx
 
   conflicts_with "httpd22", "httpd24", :because => "both install `ab`"

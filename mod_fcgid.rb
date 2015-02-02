@@ -19,16 +19,6 @@ class ModFcgid < Formula
 
   head "http://svn.apache.org/repos/asf/httpd/mod_fcgid/trunk"
 
-  bottle do
-    cellar :any
-    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
-    sha1 "b1f06bce389c24e965e291283c0635fd404bb434" => :snow_leopard
-    sha1 "630b0389c5fbf0c9cae3625cc5bed1d886165f8a" => :lion
-    sha1 "ac93fd97bb376288efece0844c781fdd1c15a99d" => :mountain_lion
-    sha1 "4e8895a6c9ac788d9bea451fbf113be643f62449" => :mavericks
-    sha1 "5cdbd977a60711772bb7decd7b10146ab5b4613f" => :yosemite
-  end
-
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"
 

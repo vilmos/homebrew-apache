@@ -18,16 +18,6 @@ class ModBonjour < Formula
   sha1 "597ad957a6524ba05e03e2679fe622abdb2662f8"
   version "2.3"
 
-  bottle do
-    cellar :any
-    root_url "https://bitbucket.org/alanthing/homebrew-apache/downloads"
-    sha1 "a0fe73aedb8473dfdcf17125e5983083dc2ffbfb" => :snow_leopard
-    sha1 "ada5772e8488af327327a7bbe9407259a716e912" => :lion
-    sha1 "733f925a80cf829b421d1d636cfed00b87f593c8" => :mountain_lion
-    sha1 "a15d59611080e35ce1808bb88bd01a344db69aee" => :mavericks
-    sha1 "3269aeccb44d4ca56588d618cece3a475693c6b7" => :yosemite
-  end
-
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"
 

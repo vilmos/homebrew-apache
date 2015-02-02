@@ -1,6 +1,6 @@
 require "formula"
 
-class ModWsgi < Formula
+class ModWsgi3 < Formula
   class CLTRequirement < Requirement
     fatal true
     satisfy { MacOS.version < :mavericks || MacOS::CLT.installed? }
@@ -13,12 +13,10 @@ class ModWsgi < Formula
     end
   end
 
-  homepage "http://modwsgi.readthedocs.org/en/latest/"
-  url "https://github.com/GrahamDumpleton/mod_wsgi/archive/4.4.7.tar.gz"
-  sha1 "1a8dc498384a7de00166d4912338a9375845f8e5"
-  sha256 "dc9810866ee9cdbcd68b4cd14e76e1bdec619694176d90787423d17adfc4b1e0"
-
-  head "https://github.com/GrahamDumpleton/mod_wsgi.git"
+  homepage "http://www.modwsgi.org/"
+  url "https://github.com/GrahamDumpleton/mod_wsgi/archive/3.5.tar.gz"
+  sha1 "57552287ced75e5fd0b2b00fb186f963f9c4236b"
+  sha256 "f0674c38f0f568ece55610bcc6a775c179835c4cba23aa7f876d2a2a8520bf93"
 
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"
@@ -70,7 +68,7 @@ class ModWsgi < Formula
 
     system "make"
 
-    libexec.install "src/server/.libs/mod_wsgi.so"
+    libexec.install ".libs/mod_wsgi.so"
   end
 
   def caveats; <<-EOS.undent

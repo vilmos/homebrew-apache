@@ -37,8 +37,6 @@ class Ab < Formula
 
     cd "support" do
       system "make", "ab"
-      # We install into the "bin" directory, although "ab" would normally be
-      # installed to "/usr/sbin/ab"
       bin.install("ab")
     end
     man1.install("docs/man/ab.1")

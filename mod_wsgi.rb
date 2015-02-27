@@ -6,7 +6,7 @@ class ModWsgi < Formula
     satisfy { MacOS.version < :mavericks || MacOS::CLT.installed? }
 
     def message; <<-EOS.undent
-      Command Line Tools required, even if Xcode is installed, on OS X 10.9 or
+      Xcode Command Line Tools required, even if Xcode is installed, on OS X 10.9 or
       10.10 and not using Homebrew httpd22 or httpd24. Resolve by running
         xcode-select --install
       EOS

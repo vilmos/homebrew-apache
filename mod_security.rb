@@ -6,7 +6,7 @@ class ModSecurity < Formula
     satisfy { MacOS.version < :mavericks || MacOS::CLT.installed? }
 
     def message; <<-EOS.undent
-      Command Line Tools required, even if Xcode is installed, on OS X 10.9 or
+      Xcode Command Line Tools required, even if Xcode is installed, on OS X 10.9 or
       10.10 and not using Homebrew httpd22 or httpd24. Resolve by running
         xcode-select --install
       EOS
@@ -14,9 +14,9 @@ class ModSecurity < Formula
   end
 
   homepage "http://www.modsecurity.org/"
-  url "https://www.modsecurity.org/tarball/2.8.0/modsecurity-2.8.0.tar.gz"
-  sha1 "0ac3931806468eef616ee2301c98b3dd1f567f7c"
-  sha256 "5cbbc7fc993d39106b653213753d25c4ec21771eee17b01b69122ccf3f73460e"
+  url "https://www.modsecurity.org/tarball/2.9.0/modsecurity-2.9.0.tar.gz"
+  sha1 "837c4615d91963ed1343b50e80d35582a78ab23b"
+  sha256 "e2bbf789966c1f80094d88d9085a81bde082b2054f8e38e0db571ca49208f434"
 
   option "with-homebrew-apr", "Use Homebrew apr"
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"

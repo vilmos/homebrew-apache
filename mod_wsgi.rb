@@ -6,7 +6,7 @@ class ModWsgi < Formula
     satisfy { MacOS.version < :mavericks || MacOS::CLT.installed? }
 
     def message; <<-EOS.undent
-      Command Line Tools required, even if Xcode is installed, on OS X 10.9 or
+      Xcode Command Line Tools required, even if Xcode is installed, on OS X 10.9 or
       10.10 and not using Homebrew httpd22 or httpd24. Resolve by running
         xcode-select --install
       EOS
@@ -14,9 +14,9 @@ class ModWsgi < Formula
   end
 
   homepage "http://modwsgi.readthedocs.org/en/latest/"
-  url "https://github.com/GrahamDumpleton/mod_wsgi/archive/4.4.7.tar.gz"
-  sha1 "1a8dc498384a7de00166d4912338a9375845f8e5"
-  sha256 "dc9810866ee9cdbcd68b4cd14e76e1bdec619694176d90787423d17adfc4b1e0"
+  url "https://github.com/GrahamDumpleton/mod_wsgi/archive/4.4.9.tar.gz"
+  sha1 "5bdc8f0ddb3975d0a5c50306335e09e588e78c07"
+  sha256 "6d62cc584ca3a06e5d27799db594728d66735fdfd1930e50b9853e82019a388a"
 
   head "https://github.com/GrahamDumpleton/mod_wsgi.git"
 

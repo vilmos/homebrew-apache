@@ -1,5 +1,3 @@
-require "formula"
-
 class ModWsgi < Formula
   class CLTRequirement < Requirement
     fatal true
@@ -14,9 +12,8 @@ class ModWsgi < Formula
   end
 
   homepage "http://modwsgi.readthedocs.org/en/latest/"
-  url "https://github.com/GrahamDumpleton/mod_wsgi/archive/4.4.9.tar.gz"
-  sha1 "5bdc8f0ddb3975d0a5c50306335e09e588e78c07"
-  sha256 "6d62cc584ca3a06e5d27799db594728d66735fdfd1930e50b9853e82019a388a"
+  url "https://github.com/GrahamDumpleton/mod_wsgi/archive/4.4.11.tar.gz"
+  sha256 "e1d6b95f696af49a334419b60e1271872f8d446027acc481ef5c9c912cbb0328"
 
   head "https://github.com/GrahamDumpleton/mod_wsgi.git"
 
@@ -31,9 +28,9 @@ class ModWsgi < Formula
   depends_on "httpd22" if build.with? "homebrew-httpd22"
   depends_on "httpd24" if build.with? "homebrew-httpd24"
   depends_on "python" if build.with? "homebrew-python"
-  depends_on CLTRequirement if build.without? "homebrew-httpd22" and build.without? "homebrew-httpd24"
+  depends_on CLTRequirement if build.without?("homebrew-httpd22") && build.without?("homebrew-httpd24")
 
-  if build.with? "homebrew-httpd22" and build.with? "homebrew-httpd24"
+  if build.with?("homebrew-httpd22") && build.with?("homebrew-httpd24")
     onoe "Cannot build for http22 and httpd24 at the same time"
     exit 1
   end
@@ -41,13 +38,13 @@ class ModWsgi < Formula
   def apache_apxs
     if build.with? "homebrew-httpd22"
       %W[sbin bin].each do |dir|
-        if File.exist?(location = "#{Formula['httpd22'].opt_prefix}/#{dir}/apxs")
+        if File.exist?(location = "#{Formula["httpd22"].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
     elsif build.with? "homebrew-httpd24"
       %W[sbin bin].each do |dir|
-        if File.exist?(location = "#{Formula['httpd24'].opt_prefix}/#{dir}/apxs")
+        if File.exist?(location = "#{Formula["httpd24"].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
@@ -71,10 +68,10 @@ class ModWsgi < Formula
     args << "--with-apxs=#{apache_apxs}"
     args << "--with-python=#{HOMEBREW_PREFIX}/bin/python" if build.with? "homebrew-python"
     system "./configure", *args
+    system "make", "LIBEXECDIR=#{libexec}", "install"
 
-    system "make"
-
-    libexec.install "src/server/.libs/mod_wsgi.so"
+    (share/"mod_wsgi").install "tests"
+    doc.install "README.rst"
   end
 
   def caveats; <<-EOS.undent
@@ -86,5 +83,4 @@ class ModWsgi < Formula
     read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS
   end
-
 end

@@ -2,9 +2,9 @@ require "formula"
 
 class Ab < Formula
   homepage "https://httpd.apache.org/docs/trunk/programs/ab.html"
-  url "https://archive.apache.org/dist/httpd/httpd-2.4.12.tar.bz2"
-  sha1 "bc4681bfd63accec8d82d3cc440fbc8264ce0f17"
-  sha256 "ad6d39edfe4621d8cc9a2791f6f8d6876943a9da41ac8533d77407a2e630eae4"
+  url "https://archive.apache.org/dist/httpd/httpd-2.4.16.tar.bz2"
+  sha1 "9963e7482700dd50c53e47abfe2d1c5068875a9c"
+  sha256 "ac660b47aaa7887779a6430404dcb40c0b04f90ea69e7bd49a40552e9ff13743"
 
   keg_only :provided_by_osx
 

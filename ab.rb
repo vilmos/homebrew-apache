@@ -6,6 +6,13 @@ class Ab < Formula
   sha1 "9963e7482700dd50c53e47abfe2d1c5068875a9c"
   sha256 "ac660b47aaa7887779a6430404dcb40c0b04f90ea69e7bd49a40552e9ff13743"
 
+  bottle do
+    cellar :any
+    sha256 "b9a37c5df915197534c04faa1ddaaa31aba4f133dce9efe79e7e55dd85f1fc47" => :yosemite
+    sha256 "86b08af96edbd95be2d8e5c75a7ce0997a60148fdf449d878d2b9f290f91d167" => :mavericks
+    sha256 "6869c71b4de183dbf06a53396ea81c2f61680385187919a394b985845a69d6e1" => :mountain_lion
+  end
+
   keg_only :provided_by_osx
 
   conflicts_with "httpd22", "httpd24", :because => "both install `ab`"

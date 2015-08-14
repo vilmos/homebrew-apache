@@ -3,6 +3,12 @@ class Httpd22 < Formula
   url "https://archive.apache.org/dist/httpd/httpd-2.2.31.tar.bz2"
   sha256 "f32f9d19f535dac63b06cb55dfc023b40dcd28196b785f79f9346779e22f26ac"
 
+  bottle do
+    sha256 "b467425b4c729c842953d4974725cf043006c05cdcb2b973daeb9b4ea12f61bc" => :yosemite
+    sha256 "e5fa95c5b6e9e05a50f165ef6292d59681f1a9ab32b14433c192501d67999cd6" => :mavericks
+    sha256 "cce58a9a01559018d6aafeae50c88ef183774ffcde0f1b621353f3e0302c41b9" => :mountain_lion
+  end
+
   conflicts_with "homebrew/apache/httpd24", :because => "different versions of the same software"
 
   skip_clean :la

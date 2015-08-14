@@ -1,7 +1,7 @@
 class Httpd22 < Formula
   homepage "https://httpd.apache.org/"
-  url "https://archive.apache.org/dist/httpd/httpd-2.2.29.tar.bz2"
-  sha256 "574b4f994b99178dfd5160bcb14025402e2ce381be9889b83e4be0ffbf5839a4"
+  url "https://archive.apache.org/dist/httpd/httpd-2.2.31.tar.bz2"
+  sha256 "f32f9d19f535dac63b06cb55dfc023b40dcd28196b785f79f9346779e22f26ac"
 
   conflicts_with "homebrew/apache/httpd24", :because => "different versions of the same software"
 

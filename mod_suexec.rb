@@ -12,13 +12,14 @@ class ModSuexec < Formula
   sha1 "ecfa7dab239ef177668ad1d5cf9d03c4602607b8" if MacOS.version == :mavericks
   url "http://archive.apache.org/dist/httpd/httpd-2.4.9.tar.bz2" if MacOS.version == :yosemite
   sha1 "646aedbf59519e914c424b3a85d846bf189be3f4" if MacOS.version == :yosemite
+  url "http://archive.apache.org/dist/httpd/httpd-2.4.16.tar.bz2" if MacOS.version == :el_capitan
+  sha1 "9963e7482700dd50c53e47abfe2d1c5068875a9c" if MacOS.version == :el_capitan
 
   depends_on "libtool" => :build
   depends_on "pcre"
 
   def install
     system "./configure",
-      "LDFLAGS=--tag=cc",
       "--enable-suexec=shared",
       "--with-suexec-bin=/usr/bin/suexec",
       "--with-suexec-caller=_www",

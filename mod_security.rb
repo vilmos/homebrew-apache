@@ -1,5 +1,3 @@
-require "formula"
-
 class ModSecurity < Formula
   class CLTRequirement < Requirement
     fatal true
@@ -15,7 +13,6 @@ class ModSecurity < Formula
 
   homepage "http://www.modsecurity.org/"
   url "https://www.modsecurity.org/tarball/2.9.0/modsecurity-2.9.0.tar.gz"
-  sha1 "837c4615d91963ed1343b50e80d35582a78ab23b"
   sha256 "e2bbf789966c1f80094d88d9085a81bde082b2054f8e38e0db571ca49208f434"
 
   option "with-homebrew-apr", "Use Homebrew apr"
@@ -33,13 +30,13 @@ class ModSecurity < Formula
   depends_on "httpd24" if build.with? "homebrew-httpd24"
   depends_on "libtool" => :build
   depends_on "pcre"
-  depends_on CLTRequirement if build.without? "homebrew-httpd22" and build.without? "homebrew-httpd24"
+  depends_on CLTRequirement if build.without?("homebrew-httpd22") && build.without?("homebrew-httpd24")
 
-  if build.with? "homebrew-apr" and (build.with? "homebrew-httpd22" or build.with? "homebrew-httpd24")
+  if build.with?("homebrew-apr") && (build.with?("homebrew-httpd22") || build.with?("homebrew-httpd24"))
     opoo "Ignoring --with-homebrew-apr: homebrew apr included in httpd22 and httpd24"
   end
 
-  if build.with? "homebrew-httpd22" and build.with? "homebrew-httpd24"
+  if build.with?("homebrew-httpd22") && build.with?("homebrew-httpd24")
     onoe "Cannot build for http22 and httpd24 at the same time"
     exit 1
   end
@@ -47,13 +44,13 @@ class ModSecurity < Formula
   def apache_apxs
     if build.with? "homebrew-httpd22"
       %W[sbin bin].each do |dir|
-        if File.exist?(location = "#{Formula['httpd22'].opt_prefix}/#{dir}/apxs")
+        if File.exist?(location = "#{Formula["httpd22"].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
     elsif build.with? "homebrew-httpd24"
       %W[sbin bin].each do |dir|
-        if File.exist?(location = "#{Formula['httpd24'].opt_prefix}/#{dir}/apxs")
+        if File.exist?(location = "#{Formula["httpd24"].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
@@ -74,12 +71,12 @@ class ModSecurity < Formula
 
   def install
     args = "--prefix=#{prefix}", "--disable-dependency-tracking"
-    args << "--with-pcre=#{Formula['pcre'].opt_prefix}"
+    args << "--with-pcre=#{Formula["pcre"].opt_prefix}"
     args << "--with-apxs=#{apache_apxs}"
 
     if (build.with? "homebrew-httpd22") || (build.with? "homebrew-httpd24") || (build.with? "homebrew-apr")
-      args << "--with-apr=#{Formula['apr'].opt_prefix}"
-      args << "--with-apu=#{Formula['apr-util'].prefix}/bin"
+      args << "--with-apr=#{Formula["apr"].opt_prefix}"
+      args << "--with-apu=#{Formula["apr-util"].prefix}/bin"
     else
       args << "--with-apr=/usr/bin"
       args << "--with-apu=/usr/bin"
@@ -115,5 +112,4 @@ class ModSecurity < Formula
     read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS
   end
-
 end

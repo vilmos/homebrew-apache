@@ -1,5 +1,3 @@
-require "formula"
-
 class ModWsgi3 < Formula
   class CLTRequirement < Requirement
     fatal true
@@ -13,9 +11,8 @@ class ModWsgi3 < Formula
     end
   end
 
-  homepage "http://www.modwsgi.org/"
+  homepage "https://modwsgi.readthedocs.org/en/develop/"
   url "https://github.com/GrahamDumpleton/mod_wsgi/archive/3.5.tar.gz"
-  sha1 "57552287ced75e5fd0b2b00fb186f963f9c4236b"
   sha256 "f0674c38f0f568ece55610bcc6a775c179835c4cba23aa7f876d2a2a8520bf93"
 
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
@@ -29,9 +26,9 @@ class ModWsgi3 < Formula
   depends_on "httpd22" if build.with? "homebrew-httpd22"
   depends_on "httpd24" if build.with? "homebrew-httpd24"
   depends_on "python" if build.with? "homebrew-python"
-  depends_on CLTRequirement if build.without? "homebrew-httpd22" and build.without? "homebrew-httpd24"
+  depends_on CLTRequirement if build.without?("homebrew-httpd22") && build.without?("homebrew-httpd24")
 
-  if build.with? "homebrew-httpd22" and build.with? "homebrew-httpd24"
+  if build.with?("homebrew-httpd22") && build.with?("homebrew-httpd24")
     onoe "Cannot build for http22 and httpd24 at the same time"
     exit 1
   end
@@ -39,13 +36,13 @@ class ModWsgi3 < Formula
   def apache_apxs
     if build.with? "homebrew-httpd22"
       %W[sbin bin].each do |dir|
-        if File.exist?(location = "#{Formula['httpd22'].opt_prefix}/#{dir}/apxs")
+        if File.exist?(location = "#{Formula["httpd22"].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
     elsif build.with? "homebrew-httpd24"
       %W[sbin bin].each do |dir|
-        if File.exist?(location = "#{Formula['httpd24'].opt_prefix}/#{dir}/apxs")
+        if File.exist?(location = "#{Formula["httpd24"].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
@@ -65,11 +62,9 @@ class ModWsgi3 < Formula
   end
 
   def install
-    args = "--prefix=#{prefix}", "--disable-framework"
-    args << "--with-apxs=#{apache_apxs}"
+    args = %W[--prefix=#{prefix} --disable-framework --with-apxs=#{apache_apxs}]
     args << "--with-python=#{HOMEBREW_PREFIX}/bin/python" if build.with? "homebrew-python"
     system "./configure", *args
-
     system "make"
 
     libexec.install ".libs/mod_wsgi.so"
@@ -84,5 +79,4 @@ class ModWsgi3 < Formula
     read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS
   end
-
 end

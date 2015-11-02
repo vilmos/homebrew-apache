@@ -1,9 +1,7 @@
-require "formula"
-
 class Ab < Formula
+  desc "Apache HTTP server benchmarking tool"
   homepage "https://httpd.apache.org/docs/trunk/programs/ab.html"
   url "https://archive.apache.org/dist/httpd/httpd-2.4.16.tar.bz2"
-  sha1 "9963e7482700dd50c53e47abfe2d1c5068875a9c"
   sha256 "ac660b47aaa7887779a6430404dcb40c0b04f90ea69e7bd49a40552e9ff13743"
 
   bottle do
@@ -17,10 +15,10 @@ class Ab < Formula
 
   conflicts_with "httpd22", "httpd24", :because => "both install `ab`"
 
+  option "with-ssl-patch", 'Apply patch for: Bug 49382 - ab says "SSL read failed"'
+
   depends_on "apr-util"
   depends_on "libtool" => :build
-
-  option "with-ssl-patch", 'Apply patch for: Bug 49382 - ab says "SSL read failed"'
 
   # Disable requirement for PCRE, because "ab" does not use it
   patch :DATA
@@ -30,7 +28,7 @@ class Ab < Formula
   # what upstream does about this.
   patch do
     url "https://gist.githubusercontent.com/Noctem/a0ba1477dbc11b5108b2/raw/ddf33c8a8b7939bbc3f12a1eb700a12b339d9194/ab-ssl-patch.diff"
-    sha1 "7c4591e343c84d956e241194aac2b2804d327147"
+    sha256 "6a71947075f733f73bdedaba27ea4e3c140bec95c63c01ab4f94b6794e0efe1c"
   end if build.with? "ssl-patch"
 
   def install
@@ -44,13 +42,13 @@ class Ab < Formula
 
     cd "support" do
       system "make", "ab"
-      bin.install("ab")
+      bin.install "ab"
     end
-    man1.install("docs/man/ab.1")
+    man1.install "docs/man/ab.1"
   end
 
   test do
-    system *%W{#{bin}/ab -k -n 10 -c 10 http://www.apple.com/}
+    system "#{bin}/ab", "-k", "-n", "10", "-c", "10", "http://www.apple.com/"
   end
 end
 

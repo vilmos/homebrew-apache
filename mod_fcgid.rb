@@ -1,5 +1,3 @@
-require "formula"
-
 class ModFcgid < Formula
   class CLTRequirement < Requirement
     fatal true
@@ -13,12 +11,11 @@ class ModFcgid < Formula
     end
   end
 
-  homepage "http://httpd.apache.org/mod_fcgid/"
-  url "http://archive.apache.org/dist/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.gz"
-  sha1 "99d6b24f3f83a3a83d1d93d12a0d5992e3fa7851"
+  homepage "https://httpd.apache.org/mod_fcgid/"
+  url "https://archive.apache.org/dist/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.gz"
   sha256 "1cbad345e3376b5d7c8f9a62b471edd7fa892695b90b79502f326b4692a679cf"
 
-  head "http://svn.apache.org/repos/asf/httpd/mod_fcgid/trunk"
+  head "https://svn.apache.org/repos/asf/httpd/mod_fcgid/trunk"
 
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"
@@ -28,23 +25,23 @@ class ModFcgid < Formula
 
   depends_on "httpd22" if build.with? "homebrew-httpd22"
   depends_on "httpd24" if build.with? "homebrew-httpd24"
-  depends_on CLTRequirement if build.without? "homebrew-httpd22" and build.without? "homebrew-httpd24"
+  depends_on CLTRequirement if build.without?("homebrew-httpd22") && build.without?("homebrew-httpd24")
 
-  if build.with? "homebrew-httpd22" and build.with? "homebrew-httpd24"
+  if build.with?("homebrew-httpd22") && build.with?("homebrew-httpd24")
     onoe "Cannot build for http22 and httpd24 at the same time"
     exit 1
   end
 
   def apache_apxs
     if build.with? "homebrew-httpd22"
-      %W[sbin bin].each do |dir|
-        if File.exist?(location = "#{Formula['httpd22'].opt_prefix}/#{dir}/apxs")
+      %w[sbin bin].each do |dir|
+        if File.exist?(location = "#{Formula["httpd22"].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
     elsif build.with? "homebrew-httpd24"
-      %W[sbin bin].each do |dir|
-        if File.exist?(location = "#{Formula['httpd24'].opt_prefix}/#{dir}/apxs")
+      %w[sbin bin].each do |dir|
+        if File.exist?(location = "#{Formula["httpd24"].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
@@ -64,7 +61,8 @@ class ModFcgid < Formula
   end
 
   def install
-    system "APXS='#{apache_apxs}' ./configure.apxs"
+    ENV["APXS"] = apache_apxs
+    system "./configure.apxs"
     system "make"
     libexec.install "modules/fcgid/.libs/mod_fcgid.so"
   end
@@ -78,5 +76,4 @@ class ModFcgid < Formula
     read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS
   end
-
 end

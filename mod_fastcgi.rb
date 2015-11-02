@@ -1,5 +1,3 @@
-require "formula"
-
 class ModFastcgi < Formula
   class CLTRequirement < Requirement
     fatal true
@@ -13,9 +11,8 @@ class ModFastcgi < Formula
     end
   end
 
-  url "http://www.fastcgi.com/dist/mod_fastcgi-2.4.6.tar.gz"
   homepage "http://www.fastcgi.com/"
-  sha1 "69c56548bf97040a61903b32679fe3e3b7d3c2d4"
+  url "http://www.fastcgi.com/dist/mod_fastcgi-2.4.6.tar.gz"
   sha256 "a5a887eecc8fe13e4cb1cab4d140188a3d2b5e6f337f8a1cce88ca441ddbe689"
 
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
@@ -26,23 +23,23 @@ class ModFastcgi < Formula
 
   depends_on "httpd22" if build.with? "homebrew-httpd22"
   depends_on "httpd24" if build.with? "homebrew-httpd24"
-  depends_on CLTRequirement if build.without? "homebrew-httpd22" and build.without? "homebrew-httpd24"
+  depends_on CLTRequirement if build.without?("homebrew-httpd22") && build.without?("homebrew-httpd24")
 
-  if build.with? "homebrew-httpd22" and build.with? "homebrew-httpd24"
+  if build.with?("homebrew-httpd22") && build.with?("homebrew-httpd24")
     onoe "Cannot build for http22 and httpd24 at the same time"
     exit 1
   end
 
   def apache_apxs
     if build.with? "homebrew-httpd22"
-      %W[sbin bin].each do |dir|
-        if File.exist?(location = "#{Formula['httpd22'].opt_prefix}/#{dir}/apxs")
+      %w[sbin bin].each do |dir|
+        if File.exist?(location = "#{Formula["httpd22"].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
     elsif build.with? "homebrew-httpd24"
-      %W[sbin bin].each do |dir|
-        if File.exist?(location = "#{Formula['httpd24'].opt_prefix}/#{dir}/apxs")
+      %w[sbin bin].each do |dir|
+        if File.exist?(location = "#{Formula["httpd24"].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
@@ -61,10 +58,10 @@ class ModFastcgi < Formula
     end
   end
 
-  if (MacOS.version == :yosemite or build.with? "homebrew-httpd24")
+  if MacOS.version == :yosemite || build.with?("homebrew-httpd24")
     patch do
       url "https://raw.githubusercontent.com/ByteInternet/libapache-mod-fastcgi/byte/debian/patches/byte-compile-against-apache24.diff"
-      sha1 "1000fac5bf814d716641bbd1528de34449049a73"
+      sha256 "e405f365fac2d80c181a7ddefc9c6332cac7766cb9c67c464c272d595cde1800"
     end
   end
 
@@ -85,5 +82,4 @@ class ModFastcgi < Formula
     read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS
   end
-
 end

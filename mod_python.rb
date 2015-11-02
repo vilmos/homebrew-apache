@@ -1,5 +1,3 @@
-require "formula"
-
 class ModPython < Formula
   class CLTRequirement < Requirement
     fatal true
@@ -15,7 +13,6 @@ class ModPython < Formula
 
   homepage "http://modpython.org/"
   url "http://dist.modpython.org/dist/mod_python-3.5.0.tgz"
-  sha1 "9208bb813172ab51d601d78e439ea552f676d2d1"
   sha256 "0ef09058ed98b41c18d899d8b710a0cce2df2b53c44d877401133b3f28bdca90"
 
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
@@ -29,9 +26,9 @@ class ModPython < Formula
   depends_on "httpd22" if build.with? "homebrew-httpd22"
   depends_on "httpd24" if build.with? "homebrew-httpd24"
   depends_on "python" if build.with? "homebrew-python"
-  depends_on CLTRequirement if build.without? "homebrew-httpd22" and build.without? "homebrew-httpd24"
+  depends_on CLTRequirement if build.without?("homebrew-httpd22") && build.without?("homebrew-httpd24")
 
-  if build.with? "homebrew-httpd22" and build.with? "homebrew-httpd24"
+  if build.with?("homebrew-httpd22") && build.with?("homebrew-httpd24")
     onoe "Cannot build for http22 and httpd24 at the same time"
     exit 1
   end
@@ -39,13 +36,13 @@ class ModPython < Formula
   def apache_apxs
     if build.with? "homebrew-httpd22"
       %W[sbin bin].each do |dir|
-        if File.exist?(location = "#{Formula['httpd22'].opt_prefix}/#{dir}/apxs")
+        if File.exist?(location = "#{Formula["httpd22"].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
     elsif build.with? "homebrew-httpd24"
       %W[sbin bin].each do |dir|
-        if File.exist?(location = "#{Formula['httpd24'].opt_prefix}/#{dir}/apxs")
+        if File.exist?(location = "#{Formula["httpd24"].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
@@ -65,11 +62,10 @@ class ModPython < Formula
   end
 
   def install
-    args = "--prefix=#{prefix}"
-    args << "--with-apxs=#{apache_apxs}"
+    args = %W[--prefix=#{prefix} --with-apxs=#{apache_apxs}]
     args << "--with-python=#{HOMEBREW_PREFIX}/bin/python" if build.with? "homebrew-python"
-    system "./configure", *args
 
+    system "./configure", *args
     system "make"
 
     libexec.install "src/.libs/mod_python.so"
@@ -84,5 +80,4 @@ class ModPython < Formula
     read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS
   end
-
 end

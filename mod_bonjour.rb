@@ -1,5 +1,3 @@
-require "formula"
-
 class ModBonjour < Formula
   class CLTRequirement < Requirement
     fatal true
@@ -15,9 +13,8 @@ class ModBonjour < Formula
 
   homepage "http://www.opensource.apple.com/source/apache_mod_bonjour/apache_mod_bonjour-23/"
   url "http://www.opensource.apple.com/tarballs/apache_mod_bonjour/apache_mod_bonjour-23.tar.gz"
-  sha1 "597ad957a6524ba05e03e2679fe622abdb2662f8"
-  sha256 "189de580be60198dcaf5d9dabc559d95ed2355c12bb55fad2f3f4f8b2b034ef6"
   version "2.3"
+  sha256 "189de580be60198dcaf5d9dabc559d95ed2355c12bb55fad2f3f4f8b2b034ef6"
 
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"
@@ -27,18 +24,18 @@ class ModBonjour < Formula
 
   depends_on "httpd22" if build.with? "homebrew-httpd22"
   depends_on "httpd24" if build.with? "homebrew-httpd24"
-  depends_on CLTRequirement if build.without? "homebrew-httpd22" and build.without? "homebrew-httpd24"
+  depends_on CLTRequirement if build.without?("homebrew-httpd22") && build.without?("homebrew-httpd24")
 
   def apache_apxs
     if build.with? "homebrew-httpd22"
-      %W[sbin bin].each do |dir|
-        if File.exist?(location = "#{Formula['httpd22'].opt_prefix}/#{dir}/apxs")
+      %w[sbin bin].each do |dir|
+        if File.exist?(location = "#{Formula["httpd22"].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
     elsif build.with? "homebrew-httpd24"
-      %W[sbin bin].each do |dir|
-        if File.exist?(location = "#{Formula['httpd24'].opt_prefix}/#{dir}/apxs")
+      %w[sbin bin].each do |dir|
+        if File.exist?(location = "#{Formula["httpd24"].opt_prefix}/#{dir}/apxs")
           return location
         end
       end
@@ -58,7 +55,7 @@ class ModBonjour < Formula
   end
 
   def install
-    if build.with? "homebrew-httpd22" and build.with? "homebrew-httpd24"
+    if build.with?("homebrew-httpd22") && build.with?("homebrew-httpd24")
       onoe "Cannot build for http22 and httpd24 at the same time"
       exit 1
     end
@@ -84,5 +81,4 @@ class ModBonjour < Formula
     read the "Troubleshooting" section of https://github.com/Homebrew/homebrew-apache
     EOS
   end
-
 end

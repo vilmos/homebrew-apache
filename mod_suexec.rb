@@ -1,19 +1,26 @@
-require "formula"
-
 class ModSuexec < Formula
-  homepage "http://httpd.apache.org/docs/current/suexec.html"
-  url "http://archive.apache.org/dist/httpd/httpd-2.2.24.tar.bz2" if MacOS.version == :snow_leopard
-  sha1 "f73bce14832ec40c1aae68f4f8c367cab2266241" if MacOS.version == :snow_leopard
-  url "http://archive.apache.org/dist/httpd/httpd-2.2.26.tar.bz2" if MacOS.version == :lion
-  sha1 "ecfa7dab239ef177668ad1d5cf9d03c4602607b8" if MacOS.version == :lion
-  url "http://archive.apache.org/dist/httpd/httpd-2.2.22.tar.bz2" if MacOS.version == :mountain_lion
-  sha1 "766cd0843050a8dfb781e48b976f3ba6ebcf8696" if MacOS.version == :mountain_lion
-  url "http://archive.apache.org/dist/httpd/httpd-2.2.26.tar.bz2" if MacOS.version == :mavericks
-  sha1 "ecfa7dab239ef177668ad1d5cf9d03c4602607b8" if MacOS.version == :mavericks
-  url "http://archive.apache.org/dist/httpd/httpd-2.4.9.tar.bz2" if MacOS.version == :yosemite
-  sha1 "646aedbf59519e914c424b3a85d846bf189be3f4" if MacOS.version == :yosemite
-  url "http://archive.apache.org/dist/httpd/httpd-2.4.16.tar.bz2" if MacOS.version == :el_capitan
-  sha1 "9963e7482700dd50c53e47abfe2d1c5068875a9c" if MacOS.version == :el_capitan
+  desc "Run CGI/SSI programs under different user IDs"
+  homepage "https://httpd.apache.org/docs/current/suexec.html"
+  case MacOS.version
+  when :snow_leopard
+    url "https://archive.apache.org/dist/httpd/httpd-2.2.24.tar.bz2"
+    sha256 "0453f5d2d7e3b1975a1c6a8a22b6d6ff768715a3b0a89b51e5f7b5851628fad7"
+  when :lion
+    url "https://archive.apache.org/dist/httpd/httpd-2.2.26.tar.bz2"
+    sha256 "af908e3dd5673f1c6f0ccc615e11d435e77517940af00e518e68ea25284b42b6"
+  when :mountain_lion
+    url "https://archive.apache.org/dist/httpd/httpd-2.2.22.tar.bz2"
+    sha256 "dcdc9f1dc722f84798caf69d69dca78daa5e09a4269060045aeca7e4f44cb231"
+  when :mavericks
+    url "https://archive.apache.org/dist/httpd/httpd-2.2.26.tar.bz2"
+    sha256 "af908e3dd5673f1c6f0ccc615e11d435e77517940af00e518e68ea25284b42b6"
+  when :yosemite
+    url "https://archive.apache.org/dist/httpd/httpd-2.4.9.tar.bz2"
+    sha256 "f78cc90dfa47caf3d83ad18fd6b4e85f237777c1733fc9088594b70ce2847603"
+  when :el_capitan
+    url "https://archive.apache.org/dist/httpd/httpd-2.4.16.tar.bz2"
+    sha256 "ac660b47aaa7887779a6430404dcb40c0b04f90ea69e7bd49a40552e9ff13743"
+  end
 
   depends_on "libtool" => :build
   depends_on "pcre"
@@ -56,8 +63,7 @@ class ModSuexec < Formula
       [notice] suEXEC mechanism enabled (wrapper: /usr/bin/suexec)
 
     Be sure to understand the security implications of suexec by carefully
-    reading http://httpd.apache.org/docs/current/suexec.html
+    reading https://httpd.apache.org/docs/current/suexec.html
     EOS
   end
-
 end

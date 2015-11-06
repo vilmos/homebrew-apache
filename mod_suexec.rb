@@ -1,7 +1,7 @@
 class ModSuexec < Formula
   desc "Run CGI/SSI programs under different user IDs"
   homepage "https://httpd.apache.org/docs/current/suexec.html"
-  case MacOS.version
+  case MacOS.version.to_sym
   when :snow_leopard
     url "https://archive.apache.org/dist/httpd/httpd-2.2.24.tar.bz2"
     sha256 "0453f5d2d7e3b1975a1c6a8a22b6d6ff768715a3b0a89b51e5f7b5851628fad7"

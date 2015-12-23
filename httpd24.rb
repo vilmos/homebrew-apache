@@ -1,8 +1,8 @@
 class Httpd24 < Formula
   desc "HTTP server"
   homepage "https://httpd.apache.org/"
-  url "https://archive.apache.org/dist/httpd/httpd-2.4.16.tar.bz2"
-  sha256 "ac660b47aaa7887779a6430404dcb40c0b04f90ea69e7bd49a40552e9ff13743"
+  url "https://archive.apache.org/dist/httpd/httpd-2.4.18.tar.bz2"
+  sha256 "0644b050de41f5c9f67c825285049b144690421acb709b06fe53eddfa8a9fd4c"
 
   bottle do
     revision 1
@@ -18,11 +18,20 @@ class Httpd24 < Formula
   option "with-mpm-worker", "Use the Worker Multi-Processing Module instead of Prefork"
   option "with-mpm-event", "Use the Event Multi-Processing Module instead of Prefork"
   option "with-privileged-ports", "Use the default ports 80 and 443 (which require root privileges), instead of 8080 and 8443"
+  option "with-ldap", "Include support for LDAP"
+  option "with-http2", "Build and enable the HTTP/2 shared Module"
 
-  depends_on "apr-util"
   depends_on "openssl"
   depends_on "pcre"
   depends_on "homebrew/dupes/zlib"
+
+  if build.with? "ldap"
+    depends_on "apr-util" => "with-openldap"
+  else
+    depends_on "apr-util"
+  end
+
+  depends_on "nghttp2" if build.with? "http2"
 
   if build.with?("mpm-worker") && build.with?("mpm-event")
     raise "Cannot build with both worker and event MPMs, choose one"
@@ -32,6 +41,14 @@ class Httpd24 < Formula
     # point config files to opt_prefix instead of the version-specific prefix
     inreplace "Makefile.in",
       '#@@ServerRoot@@#$(prefix)#', '#@@ServerRoot@@'"##{opt_prefix}#"
+
+    # fix non-executable files in sbin dir (for brew audit)
+    inreplace "support/Makefile.in",
+      '$(DESTDIR)$(sbindir)/envvars', '$(DESTDIR)$(sysconfdir)/envvars'
+    inreplace "support/Makefile.in",
+      'envvars-std $(DESTDIR)$(sbindir);', 'envvars-std $(DESTDIR)$(sysconfdir);'
+    inreplace "support/apachectl.in",
+      '@exp_sbindir@/envvars', "#{etc}/apache2/2.4/envvars"
 
     # install custom layout
     File.open("config.layout", "w") { |f| f.write(httpd_layout) }
@@ -70,9 +87,15 @@ class Httpd24 < Formula
       args << "--with-port=8080" << "--with-sslport=8443"
     end
 
+    if build.with? "http2"
+      args << "--enable-http2" << "--with-nghttp2=#{Formula["nghttp2"].opt_prefix}"
+    end
+
     if build.with? "ldap"
       args << "--with-ldap" << "--enable-ldap" << "--enable-authnz-ldap"
     end
+
+    (etc/"apache2/2.4").mkpath
 
     system "./configure", *args
 
@@ -93,7 +116,7 @@ class Httpd24 < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/httpd</string>
+        <string>#{opt_bin}/httpd</string>
         <string>-D</string>
         <string>FOREGROUND</string>
       </array>
@@ -122,7 +145,7 @@ class Httpd24 < Formula
           htdocsdir:     ${datadir}/htdocs
           manualdir:     ${datadir}/manual
           cgidir:        #{var}/apache2/cgi-bin
-          includedir:    ${prefix}/include/apache2
+          includedir:    ${prefix}/include/httpd
           localstatedir: #{var}/apache2
           runtimedir:    #{var}/run/apache2
           logfiledir:    #{var}/log/apache2

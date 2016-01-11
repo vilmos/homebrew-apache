@@ -37,11 +37,6 @@ class ModSecurity < Formula
     opoo "Ignoring --with-homebrew-apr: homebrew apr included in httpd22 and httpd24"
   end
 
-  if build.with?("homebrew-httpd22") && build.with?("homebrew-httpd24")
-    onoe "Cannot build for http22 and httpd24 at the same time"
-    exit 1
-  end
-
   def apache_apxs
     if build.with? "homebrew-httpd22"
       %W[sbin bin].each do |dir|
@@ -71,11 +66,18 @@ class ModSecurity < Formula
   end
 
   def install
-    args = "--prefix=#{prefix}", "--disable-dependency-tracking"
-    args << "--with-pcre=#{Formula["pcre"].opt_prefix}"
-    args << "--with-apxs=#{apache_apxs}"
+    if build.with?("homebrew-httpd22") && build.with?("homebrew-httpd24")
+      odie "Cannot build for http22 and httpd24 at the same time"
+    end
 
-    if (build.with? "homebrew-httpd22") || (build.with? "homebrew-httpd24") || (build.with? "homebrew-apr")
+    args = %W[
+      --prefix=#{prefix}
+      --disable-dependency-tracking
+      --with-pcre=#{Formula["pcre"].opt_prefix}
+      --with-apxs=#{apache_apxs}
+    ]
+
+    if build.with?("homebrew-httpd22") || build.with?("homebrew-httpd24") || build.with?("homebrew-apr")
       args << "--with-apr=#{Formula["apr"].opt_prefix}"
       args << "--with-apu=#{Formula["apr-util"].prefix}/bin"
     else

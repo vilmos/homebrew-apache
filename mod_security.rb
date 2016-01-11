@@ -16,6 +16,13 @@ class ModSecurity < Formula
   url "https://www.modsecurity.org/tarball/2.9.0/modsecurity-2.9.0.tar.gz"
   sha256 "e2bbf789966c1f80094d88d9085a81bde082b2054f8e38e0db571ca49208f434"
 
+  bottle do
+    cellar :any
+    sha256 "778b6c2cf9e7da31a0d14bc8c98a681294c567be2c0d55c83e761e1abb181a8d" => :el_capitan
+    sha256 "13b7104c8843d8408deb2e61211d6c9a37e224dfc4cfde32c1f2b249ca6c8fa5" => :yosemite
+    sha256 "175a0c7372763968f5610cc3685ab8ccb5fdb14c4e799e32e531835b5f8c5922" => :mavericks
+  end
+
   option "with-homebrew-apr", "Use Homebrew apr"
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"

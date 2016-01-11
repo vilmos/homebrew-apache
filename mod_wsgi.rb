@@ -31,11 +31,6 @@ class ModWsgi < Formula
   depends_on "python" if build.with? "homebrew-python"
   depends_on CLTRequirement if build.without?("homebrew-httpd22") && build.without?("homebrew-httpd24")
 
-  if build.with?("homebrew-httpd22") && build.with?("homebrew-httpd24")
-    onoe "Cannot build for http22 and httpd24 at the same time"
-    exit 1
-  end
-
   def apache_apxs
     if build.with? "homebrew-httpd22"
       %W[sbin bin].each do |dir|
@@ -65,8 +60,16 @@ class ModWsgi < Formula
   end
 
   def install
-    args = "--prefix=#{prefix}", "--disable-framework"
-    args << "--with-apxs=#{apache_apxs}"
+    if build.with?("homebrew-httpd22") && build.with?("homebrew-httpd24")
+      odie "Cannot build for http22 and httpd24 at the same time"
+    end
+
+    args = %W[
+      --prefix=#{prefix}
+      --disable-framework
+      --with-apxs=#{apache_apxs}
+    ]
+
     args << "--with-python=#{HOMEBREW_PREFIX}/bin/python" if build.with? "homebrew-python"
     system "./configure", *args
     system "make", "LIBEXECDIR=#{libexec}", "install"

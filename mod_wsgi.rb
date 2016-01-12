@@ -18,6 +18,13 @@ class ModWsgi < Formula
 
   head "https://github.com/GrahamDumpleton/mod_wsgi.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "d831b59df04e0b46abc09d3635887f9fb909026e0acbd93224913fc0e2f715c7" => :el_capitan
+    sha256 "9c01d90cecf68699001a0525fc3b4bb6ae9c2f46b9bf2cfc200c434e819fb7ed" => :yosemite
+    sha256 "584f0b8891a4eda86bac22941edb6529cda1101a3005afdde1ddd6f9eb0065bb" => :mavericks
+  end
+
   option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
   option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"
   option "with-homebrew-python", "Use Homebrew python"

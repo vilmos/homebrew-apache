@@ -106,6 +106,12 @@ class Httpd24 < Formula
     touch("#{var}/log/apache2/error_log") unless File.exist?("#{var}/log/apache2/error_log")
   end
 
+  if build.with? "privileged-ports"
+    plist_options :startup => true, :manual => "apachectl start"
+  else
+    plist_options :manual => "apachectl start"
+  end
+
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -151,24 +157,6 @@ class Httpd24 < Formula
           proxycachedir: ${localstatedir}/proxy
       </Layout>
     EOS
-  end
-
-  def caveats
-    if build.with? "privileged-ports"
-      <<-EOS.undent
-      To load #{name} when --with-privileged-ports is used:
-          sudo cp -v #{plist_path} /Library/LaunchDaemons
-          sudo chown -v root:wheel /Library/LaunchDaemons/#{plist_path.basename}
-          sudo chmod -v 644 /Library/LaunchDaemons/#{plist_path.basename}
-          sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
-
-      To reload #{name} after an upgrade when --with-privileged-ports is used:
-          sudo launchctl unload /Library/LaunchDaemons/#{plist_path.basename}
-          sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
-
-      If not using --with-privileged-ports, use the instructions below.
-      EOS
-    end
   end
 
   test do
